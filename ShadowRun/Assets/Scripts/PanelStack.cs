@@ -2,8 +2,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityWeld.Binding;
 
-public class PanelStack : MonoBehaviour
+[Binding]
+public class PanelStack : DataBindMonobehaviour
 {
     public enum PanelChangeType
     {
@@ -46,6 +48,7 @@ public class PanelStack : MonoBehaviour
     /// Adds a panel on top of the stack
     /// </summary>
     /// <param name="panel"></param>
+    [Binding]
     public void PushPanel(Panel panel)
     {
         if (panel == null)
@@ -64,6 +67,7 @@ public class PanelStack : MonoBehaviour
     /// <summary>
     /// Removes a panel from the stack
     /// </summary>
+    [Binding]
     public void PopPanel()
     {
         if (Panels.Count <= 1)
@@ -82,6 +86,7 @@ public class PanelStack : MonoBehaviour
     /// <summary>
     /// Removes all but the base panel from the stack
     /// </summary>
+    [Binding]
     public void ClearPanels()
     {
         if (Panels.Count <= 1)
