@@ -7,7 +7,7 @@ using UnityWeld.Binding;
 [Binding]
 public class FeedPanel : Panel
 {
-    private ObservableList<FeedMessageView> messages;
+    private ObservableList<FeedMessageView> messages = new ObservableList<FeedMessageView>();
     [Binding]
     public ObservableList<FeedMessageView> Messages
     {
