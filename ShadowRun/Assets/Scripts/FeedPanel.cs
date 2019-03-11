@@ -14,4 +14,9 @@ public class FeedPanel : Panel
         get { return messages; }
         set { SetProperty(ref messages, value, nameof(Messages)); }
     }
+
+    public void AddMessage(string sender, string text)
+    {
+        Messages.Add(new FeedMessageView(sender, text));
+    }
 }
