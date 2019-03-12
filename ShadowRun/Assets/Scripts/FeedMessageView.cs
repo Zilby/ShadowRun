@@ -30,9 +30,23 @@ public class FeedMessageView : DataBindObject
         private set { SetProperty(ref text, value, nameof(Text)); }
     }
 
-    public FeedMessageView(string sender, string text)
+    private bool isTest;
+    [Binding]
+    public bool IsTest
+    {
+        get { return isTest; }
+        set { SetProperty(ref isTest, value, nameof(IsTest)); }
+    }
+
+    public FeedMessageView(string sender, string text, bool isTest)
     {
         Sender = sender;
         Text = text;
+    }
+
+    [Binding]
+    public void LinkToDiceRoller()
+    {
+        
     }
 }

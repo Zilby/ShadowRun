@@ -25,4 +25,10 @@ public class FeedPanel : Panel
     {
         PanelStack.Instance.PushPanel<CharacterSheetPanel>();
     }
+
+    [Binding]
+    public void GoToTestMaker()
+    {
+        PanelStack.Instance.PushPanel<TestMakerPanel>();
+    }
 }

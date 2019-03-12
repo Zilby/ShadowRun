@@ -27,9 +27,9 @@ public class FeedModel : DataBindObject
         set { SetProperty(ref messages, value, nameof(Messages)); }
     }
 
-    public void AddMessage(string sender, string text)
+    public void AddMessage(string sender, string text, bool isTest = false)
     {
-        Messages.Add(new FeedMessageView(sender, text));
+        Messages.Add(new FeedMessageView(sender, text, isTest));
     }
 
     private FeedModel() { }

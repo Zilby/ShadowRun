@@ -83,7 +83,7 @@ public class PanelStack : DataBindMonobehaviour
     {
         if (Panels.Count <= 1)
         {
-            Debug.LogError("Cannot pop, must be showing at least one panel");
+            //Debug.LogError("Cannot pop, must be showing at least one panel");
             return;
         }
         var oldPanel = Panels[Panels.Count - 1];

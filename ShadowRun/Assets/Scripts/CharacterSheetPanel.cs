@@ -107,6 +107,15 @@ public class CharacterSheetPanel : Panel
 
     }
 
+
+
+    private string _name;
+    [Binding]
+    public string Name
+    {
+        get { return _name; }
+        private set { SetProperty(ref _name, value, nameof(Name)); }
+    }
     private ObservableList<Attribute> attributes = new ObservableList<Attribute>();
     [Binding]
     public ObservableList<Attribute> Attributes
