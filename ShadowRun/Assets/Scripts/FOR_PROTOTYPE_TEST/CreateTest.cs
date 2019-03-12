@@ -6,6 +6,6 @@ public class CreateTest : MonoBehaviour
 {
     public void MakeTest()
     {
-        FeedModel.Instance.AddMessage("Game Master", $"Created new opposed test for {CharacterSheetPanel.SkillOptions[2].text}", true);
+        FeedModel.Instance.AddMessage("Game Master", $"Created new opposed test against Troll using the {CharacterSheetPanel.SkillOptions[2].text} skill", true);
     }
 }
