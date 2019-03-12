@@ -51,7 +51,10 @@ public class PanelStack : DataBindMonobehaviour
             return;
         }
         Panels.Add(basePanel);
-        basePanel.gameObject.SetActive(true);
+        foreach (var panel in GetComponentsInChildren<Panel>(true))
+        {
+            panel.gameObject.SetActive(panel == basePanel);
+        }
     }
 
     /// <summary>
