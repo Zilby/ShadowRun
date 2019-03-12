@@ -42,11 +42,12 @@ public class FeedMessageView : DataBindObject
     {
         Sender = sender;
         Text = text;
+        IsTest = isTest;
     }
 
     [Binding]
     public void LinkToDiceRoller()
     {
-        
+        PanelStack.Instance.PushPanel<DiceRollPanel>();
     }
 }

@@ -57,7 +57,7 @@ public class TestMakerPanel : Panel
     [Binding]
     public void CreateTest()
     {
-        FeedModel.Instance.AddMessage("GM", $"Created new success test for {Skill}", true);
+        FeedModel.Instance.AddMessage("GM", $"Created new success test for {Skill.text}", true);
         Debug.Log($"New test for {Skill.text} at threshold {Threshold}");
         PanelStack.Instance.PopPanel();
     }

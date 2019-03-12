@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 5854192556850470216}
   - component: {fileID: 5854192556850470219}
   - component: {fileID: 6575341395401731019}
+  - component: {fileID: 4385928965356792319}
   m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
@@ -96,6 +97,22 @@ MonoBehaviour:
   viewAdapterOptions: {fileID: 0}
   viewModelPropertyName: FeedMessageView.Text
   viewPropertyName: UnityEngine.UI.Text.text
+--- !u!114 &4385928965356792319
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5854192556850470213}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb040b803ad26404caec9f699b95f06a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  viewAdapterTypeName: UnityWeld.Binding.Adapters.BoolToColorAdapter
+  viewAdapterOptions: {fileID: 11400000, guid: 4d9ac789ac524344f907c7f1beb2a54a, type: 2}
+  viewModelPropertyName: FeedMessageView.IsTest
+  viewPropertyName: UnityEngine.UI.Text.color
 --- !u!1 &5854192558296145181
 GameObject:
   m_ObjectHideFlags: 0
@@ -111,6 +128,8 @@ GameObject:
   - component: {fileID: 1892561945786416925}
   - component: {fileID: 4840424628229693245}
   - component: {fileID: 2743745657376671315}
+  - component: {fileID: 6344034642334158860}
+  - component: {fileID: 7965040607578447411}
   m_Layer: 5
   m_Name: ChatMessageView
   m_TagString: Untagged
@@ -268,6 +287,36 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &6344034642334158860
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5854192558296145181}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 27b69f2896690cb45a994b415ad87408, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  viewModelMethodName: FeedMessageView.LinkToDiceRoller
+  viewEventName: UnityEngine.UI.Button.onClick
+--- !u!114 &7965040607578447411
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5854192558296145181}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb040b803ad26404caec9f699b95f06a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  viewAdapterTypeName: 
+  viewAdapterOptions: {fileID: 0}
+  viewModelPropertyName: FeedMessageView.IsTest
+  viewPropertyName: UnityEngine.UI.Button.interactable
 --- !u!1 &9025198080617736094
 GameObject:
   m_ObjectHideFlags: 0
