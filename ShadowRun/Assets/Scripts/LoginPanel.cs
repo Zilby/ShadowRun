@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LoginPanel : MonoBehaviour
+public class LoginPanel : Panel
 {
     // Start is called before the first frame update
     void Start()
