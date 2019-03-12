@@ -14,12 +14,28 @@ public class DiceRollPanel : Panel
         set { SetProperty(ref rolled, value, nameof(Rolled)); }
     }
 
+    private bool finished;
+    [Binding]
+    public bool Finished
+    {
+        get { return finished; }
+        set { SetProperty(ref finished, value, nameof(Finished)); }
+    }
+
     private int? result;
     [Binding]
     public int? Result
     {
         get { return result; }
         set { SetProperty(ref result, value, nameof(Result)); }
+    }
+
+    private bool success;
+    [Binding]
+    public bool Success
+    {
+        get { return success; }
+        set { SetProperty(ref success, value, nameof(Success)); }
     }
 
     [SerializeField]
@@ -39,6 +55,7 @@ public class DiceRollPanel : Panel
     void OnDisable()
     {
         Rolled = false;
+        Finished = false;
         Result = null;
         diceRoller.ResetRoller();
     }
@@ -52,6 +69,7 @@ public class DiceRollPanel : Panel
         {
             return (ret = diceRoller.GetDiceTotal()) != null;
         });
+        Finished = true;
         Result = ret;
     }
 
