@@ -15,7 +15,7 @@ public class TestAddFeedMessage : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            feedPanel.AddMessage("GM", $"Hello World {count++}");
+            FeedModel.Instance.AddMessage("GM", $"Hello World {count++}");
         }
     }
 }

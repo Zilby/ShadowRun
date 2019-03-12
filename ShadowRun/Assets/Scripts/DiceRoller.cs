@@ -139,7 +139,7 @@ public class DiceRoller : MonoBehaviour
 	/// </summary>
 	void ResetRoller()
 	{
-		diceRolls = new List<DiceRoll>();
+		//diceRolls = new List<DiceRoll>();
 		foreach (Dice d in diceToBeRolled)
 		{
 			Destroy(d.gameObject);

@@ -7,6 +7,15 @@ using UnityWeld.Binding;
 [Binding]
 public class PanelStack : DataBindMonobehaviour
 {
+    private static PanelStack instance;
+    public static PanelStack Instance
+    {
+        get
+        {
+            return instance;
+        }
+    }
+
     public enum PanelChangeType
     {
         PUSH,
@@ -35,6 +44,7 @@ public class PanelStack : DataBindMonobehaviour
 
     private void Awake()
     {
+        instance = this;
         if (basePanel == null)
         {
             Debug.LogError("PanelStack must have a base panel defined");
@@ -46,14 +56,15 @@ public class PanelStack : DataBindMonobehaviour
 
     /// <summary>
     /// Adds a panel on top of the stack
-    /// </summary>
-    /// <param name="panel"></param>
+    /// <summary>
+    /// <typeparam name="T"></typeparam>
     [Binding]
-    public void PushPanel(Panel panel)
+    public void PushPanel<T>() where T : Panel
     {
+        var panel = GetComponentInChildren<T>(includeInactive: true);
         if (panel == null)
         {
-            Debug.LogError("Cannot push a null panel");
+            Debug.LogError($"No panel of type {typeof(T)} exists");
             return;
         }
         var oldPanel = Panels[Panels.Count - 1];

@@ -7,16 +7,22 @@ using UnityWeld.Binding;
 [Binding]
 public class FeedPanel : Panel
 {
-    private ObservableList<FeedMessageView> messages = new ObservableList<FeedMessageView>();
+    private ObservableList<FeedMessageView> messages;
     [Binding]
     public ObservableList<FeedMessageView> Messages
     {
         get { return messages; }
-        set { SetProperty(ref messages, value, nameof(Messages)); }
+        private set { SetProperty(ref messages, value, nameof(Messages)); }
     }
 
-    public void AddMessage(string sender, string text)
+    private void Start()
     {
-        Messages.Add(new FeedMessageView(sender, text));
+        Messages = FeedModel.Instance.Messages;
+    }
+
+    [Binding]
+    public void GoToCharacterPanel()
+    {
+        PanelStack.Instance.PushPanel<CharacterSheetPanel>();
     }
 }
