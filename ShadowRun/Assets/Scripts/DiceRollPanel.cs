@@ -22,9 +22,9 @@ public class DiceRollPanel : Panel
         set { SetProperty(ref finished, value, nameof(Finished)); }
     }
 
-    private int? result;
+    private int result;
     [Binding]
-    public int? Result
+    public int Result
     {
         get { return result; }
         set { SetProperty(ref result, value, nameof(Result)); }
@@ -56,21 +56,22 @@ public class DiceRollPanel : Panel
     {
         Rolled = false;
         Finished = false;
-        Result = null;
+        Result = 0;
         diceRoller.ResetRoller();
     }
 
     private IEnumerator WaitForResult()
     {
-        int? ret = null;
         diceRoller.RollDice();
         Rolled = true;
         yield return new WaitUntil(() =>
         {
-            return (ret = diceRoller.GetDiceTotal()) != null;
+            return (diceRoller.GetDiceTotal()) != null;
         });
         Finished = true;
-        Result = ret;
+        Result = diceRoller.GetDiceTotal().Value;
+        // Set success based on equation
+        Success = true;
     }
 
     [Binding]

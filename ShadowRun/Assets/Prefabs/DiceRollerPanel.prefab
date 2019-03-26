@@ -1017,7 +1017,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   viewAdapterTypeName: UnityWeld.Binding.Adapters.BoolToStringAdapter
   viewAdapterOptions: {fileID: 11400000, guid: 6aea60dbabb6fd7438bfa6721687d310, type: 2}
-  viewModelPropertyName: DiceRollPanel.Result
+  viewModelPropertyName: DiceRollPanel.Success
   viewPropertyName: UnityEngine.UI.Text.text
 --- !u!114 &8755255539643204376
 MonoBehaviour:
