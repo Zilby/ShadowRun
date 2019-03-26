@@ -8,4 +8,12 @@ public class CreateTest : MonoBehaviour
     {
         FeedModel.Instance.AddMessage("Game Master", $"Created new opposed test against Troll using the {CharacterSheetPanel.SkillOptions[2].text} skill", true);
     }
+
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.N))
+        {
+            NotificationSystem.DisplayNotification("Notify");
+        }
+    }
 }

@@ -34,6 +34,7 @@ public class CharacterSheetPanel : Panel
     public class Attribute : DataBindObject
     {
         public Action removeMe;
+        public Action unsavedChanges;
 
         [Binding]
         public List<Dropdown.OptionData> Options => CharacterSheetPanel.SkillOptions;
@@ -65,30 +66,35 @@ public class CharacterSheetPanel : Panel
         public void IncrementValue()
         {
             Data.Value++;
+            unsavedChanges?.Invoke();
         }
 
         [Binding]
         public void DecrementValue()
         {
             Data.Value--;
+            unsavedChanges?.Invoke();
         }
 
         [Binding]
         public void IncrementBuff()
         {
             Data.Buff++;
+            unsavedChanges?.Invoke();
         }
 
         [Binding]
         public void DecrementBuff()
         {
             Data.Buff--;
+            unsavedChanges?.Invoke();
         }
 
         [Binding]
         public void Remove()
         {
             removeMe?.Invoke();
+            unsavedChanges?.Invoke();
         }
     }
 
@@ -99,6 +105,15 @@ public class CharacterSheetPanel : Panel
         get { return _name; }
         private set { SetProperty(ref _name, value, nameof(Name)); }
     }
+
+    private bool unsavedChanges;
+    [Binding]
+    public bool UnsavedChanges
+    {
+        get { return unsavedChanges; }
+        set { SetProperty(ref unsavedChanges, value, nameof(UnsavedChanges)); }
+    }
+
     private ObservableList<Attribute> attributes = new ObservableList<Attribute>();
     [Binding]
     public ObservableList<Attribute> Attributes
@@ -115,31 +130,38 @@ public class CharacterSheetPanel : Panel
         private set { SetProperty(ref skills, value, nameof(Skills)); }
     }
 
-    void Start()
+    void OnEnable()
     {
         var savedAttrs = CharacterModel.Instance.Characters.MyCharacter.Attributes;
         var savedSkills = CharacterModel.Instance.Characters.MyCharacter.Skills;
+        attributes.Clear();
+        skills.Clear();
+
         // If we haven't saved our character yet, create new data;
         foreach (var attr in savedAttrs)
         {
-            attributes.Add(new Attribute { Data = attr });
+            var newAttr = new Attribute { Data = attr };
+            newAttr.unsavedChanges += MarkUnsavedChanges;
+            attributes.Add(newAttr);
         }
 
         foreach (var skill in savedSkills)
         {
             var newSkill = new Attribute { Data = skill, Index = SkillOptions.FindIndex(option => option.text == skill.Name) };
             newSkill.removeMe = () => RemoveSkill(newSkill);
+            newSkill.unsavedChanges += MarkUnsavedChanges;
             skills.Add(newSkill);
-
         }
     }
 
     [Binding]
     public void AddSkill()
     {
-        var attr = new Attribute { Data = new AttributeData { Name = "...", Value = 0, Buff = 0 } };
-        attr.removeMe = () => RemoveSkill(attr);
-        Skills.Add(attr);
+        var skill = new Attribute { Data = new AttributeData { Name = "...", Value = 0, Buff = 0 } };
+        skill.removeMe = () => RemoveSkill(skill);
+        skill.unsavedChanges += MarkUnsavedChanges;
+        Skills.Add(skill);
+        UnsavedChanges = true;
     }
 
     [Binding]
@@ -161,6 +183,12 @@ public class CharacterSheetPanel : Panel
 
     private void RemoveSkill(Attribute skill)
     {
+        skill.unsavedChanges -= MarkUnsavedChanges;
         Skills.Remove(skill);
+    }
+
+    private void MarkUnsavedChanges()
+    {
+        UnsavedChanges = true;
     }
 }
