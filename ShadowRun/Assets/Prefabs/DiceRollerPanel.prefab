@@ -75,10 +75,10 @@ MonoBehaviour:
     m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
-    m_HorizontalOverflow: 1
+    m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: Tap Anywhere to Roll
+  m_Text: Tap Anywhere or Shake to Roll
 --- !u!1 &1953024921812647349
 GameObject:
   m_ObjectHideFlags: 0
