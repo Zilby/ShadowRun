@@ -50,25 +50,25 @@ public class DiceRoller : MonoBehaviour
     }
 
     // For testing purposes
-    public void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.S))
-        {
-            SetUpDice();
-        }
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            RollDice();
-        }
-        if (Input.GetKeyDown(KeyCode.G))
-        {
-            print(GetDiceTotal());
-        }
-        if (Input.GetKeyDown(KeyCode.X))
-        {
-            ResetRoller();
-        }
-    }
+    // public void Update()
+    // {
+    //     if (Input.GetKeyDown(KeyCode.S))
+    //     {
+    //         SetUpDice();
+    //     }
+    //     if (Input.GetKeyDown(KeyCode.R))
+    //     {
+    //         RollDice();
+    //     }
+    //     if (Input.GetKeyDown(KeyCode.G))
+    //     {
+    //         print(GetDiceTotal());
+    //     }
+    //     if (Input.GetKeyDown(KeyCode.X))
+    //     {
+    //         ResetRoller();
+    //     }
+    // }
 
     /// <summary>
     /// Sets up all the currently stored dice. 

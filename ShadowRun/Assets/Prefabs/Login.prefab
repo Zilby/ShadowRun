@@ -869,6 +869,7 @@ GameObject:
   - component: {fileID: 1014636885492340500}
   - component: {fileID: 7527452946237930481}
   - component: {fileID: 6928306186898991951}
+  - component: {fileID: 1850945707672431219}
   m_Layer: 5
   m_Name: Button (1)
   m_TagString: Untagged
@@ -989,6 +990,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   viewModelMethodName: LoginPanel.EnterRoom
   viewEventName: UnityEngine.UI.Button.onClick
+--- !u!114 &1850945707672431219
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6535397897154526894}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb040b803ad26404caec9f699b95f06a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  viewAdapterTypeName: UnityWeld.Binding.Adapters.StringEmptyToBoolAdapter
+  viewAdapterOptions: {fileID: 0}
+  viewModelPropertyName: LoginPanel.RoomCode
+  viewPropertyName: UnityEngine.UI.Button.interactable
 --- !u!1 &7869642620756056018
 GameObject:
   m_ObjectHideFlags: 0

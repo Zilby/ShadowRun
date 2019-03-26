@@ -49,6 +49,8 @@ public class DiceRollPanel : Panel
             Debug.LogError("Dice roller cannot be null");
             return;
         }
+        diceRoller.diceRolls.Clear();
+        diceRoller.diceRolls.Add(new DiceRoller.DiceRoll { type = DiceRoller.DiceType.D6, number = 50 });
         diceRoller.SetUpDice();
     }
 
@@ -77,6 +79,9 @@ public class DiceRollPanel : Panel
     [Binding]
     public void RollDice()
     {
-        StartCoroutine(WaitForResult());
+        if (!Rolled)
+        {
+            StartCoroutine(WaitForResult());
+        }
     }
 }

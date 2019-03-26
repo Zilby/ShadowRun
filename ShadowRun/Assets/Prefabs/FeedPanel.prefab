@@ -298,7 +298,7 @@ MonoBehaviour:
     m_LineSpacing: 1
   m_Text: 'Create a Test
 
-    <color="red">This button is for testing purposes only</color>'
+    <color="red">This button for testing purposes only</color>'
 --- !u!1 &6544932587323112862
 GameObject:
   m_ObjectHideFlags: 0
