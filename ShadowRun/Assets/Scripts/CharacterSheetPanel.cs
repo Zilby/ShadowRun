@@ -179,12 +179,14 @@ public class CharacterSheetPanel : Panel
             MyCharacter.Skills.Add(skill.Data);
         }
         CharacterModel.Instance.Save();
+        UnsavedChanges = false;
     }
 
     private void RemoveSkill(Attribute skill)
     {
         skill.unsavedChanges -= MarkUnsavedChanges;
         Skills.Remove(skill);
+        MarkUnsavedChanges();
     }
 
     private void MarkUnsavedChanges()

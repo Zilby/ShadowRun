@@ -357,6 +357,7 @@ GameObject:
   - component: {fileID: 269329372}
   - component: {fileID: 269329371}
   - component: {fileID: 269329375}
+  - component: {fileID: 269329376}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -461,6 +462,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   basePanel: {fileID: 1407025501}
+--- !u!114 &269329376
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 269329370}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 65428bfd1c35df746a6084e19c622ef1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &320856661
 GameObject:
   m_ObjectHideFlags: 0
@@ -1040,6 +1053,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 70, y: 0, z: 0}
+--- !u!114 &2124112097 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7960974319348584715, guid: 587cefa1b5b526a43b84a18d9ea7b95f,
+    type: 3}
+  m_PrefabInstance: {fileID: 7960974319501457355}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1297475563, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &608558447023202636 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 608558447023202636, guid: 1968611d267352641bd86487854f51e2,
@@ -1207,7 +1232,7 @@ PrefabInstance:
     - target: {fileID: 2796042313275031080, guid: d4941f0665a7bfa468efedeac33e445f,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 20
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2796042313275031080, guid: d4941f0665a7bfa468efedeac33e445f,
         type: 3}
@@ -1217,7 +1242,7 @@ PrefabInstance:
     - target: {fileID: 2796042313275031080, guid: d4941f0665a7bfa468efedeac33e445f,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 1040
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2796042313275031080, guid: d4941f0665a7bfa468efedeac33e445f,
         type: 3}
@@ -1287,7 +1312,7 @@ PrefabInstance:
     - target: {fileID: 2796042312087151486, guid: d4941f0665a7bfa468efedeac33e445f,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 20
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2796042312087151486, guid: d4941f0665a7bfa468efedeac33e445f,
         type: 3}
@@ -1297,7 +1322,7 @@ PrefabInstance:
     - target: {fileID: 2796042312087151486, guid: d4941f0665a7bfa468efedeac33e445f,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 1040
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2796042312087151486, guid: d4941f0665a7bfa468efedeac33e445f,
         type: 3}
@@ -1586,6 +1611,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: FeedPanel
       objectReference: {fileID: 0}
+    - target: {fileID: 7960974319296389706, guid: 587cefa1b5b526a43b84a18d9ea7b95f,
+        type: 3}
+      propertyPath: scrollview
+      value: 
+      objectReference: {fileID: 2124112097}
     - target: {fileID: 7960974319296389711, guid: 587cefa1b5b526a43b84a18d9ea7b95f,
         type: 3}
       propertyPath: m_LocalPosition.x

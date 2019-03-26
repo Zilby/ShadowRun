@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02275c67dc3a6054faf440cb2bb31d84, type: 3}
   m_Name: SuccessFailureColorOptions
   m_EditorClassIdentifier: 
-  FalseColor: {r: 0.7264151, g: 0, b: 0, a: 1}
+  FalseColor: {r: 0.8392157, g: 0, b: 0, a: 1}
   TrueColor: {r: 0, g: 0.7075472, b: 0.042488217, a: 1}
