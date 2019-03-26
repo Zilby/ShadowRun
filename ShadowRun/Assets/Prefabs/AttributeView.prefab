@@ -68,7 +68,7 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 100
+    m_FontSize: 80
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 0
@@ -94,7 +94,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   viewAdapterTypeName: 
   viewAdapterOptions: {fileID: 0}
-  viewModelPropertyName: CharacterSheetPanel+Attribute.Name
+  viewModelPropertyName: AttributeData.Name
   viewPropertyName: UnityEngine.UI.Text.text
 --- !u!1 &4326973160645074823
 GameObject:
@@ -386,7 +386,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   viewAdapterTypeName: UnityWeld.Binding.Adapters.IntToStringAdapter
   viewAdapterOptions: {fileID: 0}
-  viewModelPropertyName: CharacterSheetPanel+Attribute.Total
+  viewModelPropertyName: AttributeData.Total
   viewPropertyName: UnityEngine.UI.Text.text
 --- !u!1 &4326973161390357087
 GameObject:
@@ -533,6 +533,7 @@ GameObject:
   - component: {fileID: 4326973161526187364}
   - component: {fileID: 4326973161526187365}
   - component: {fileID: 4326973161526187370}
+  - component: {fileID: 8516362973705357240}
   m_Layer: 5
   m_Name: AttributeView
   m_TagString: Untagged
@@ -611,6 +612,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   viewModelTypeName: CharacterSheetPanel+Attribute
+--- !u!114 &8516362973705357240
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4326973161526187368}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ffa7e2075ad7c9b40a47b30b477658ec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  viewModelPropertyName: CharacterSheetPanel+Attribute.Data
+  viewModelTypeName: AttributeData
 --- !u!1 &4326973161861198002
 GameObject:
   m_ObjectHideFlags: 0

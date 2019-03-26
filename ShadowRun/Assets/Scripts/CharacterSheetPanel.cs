@@ -33,81 +33,64 @@ public class CharacterSheetPanel : Panel
     [Binding]
     public class Attribute : DataBindObject
     {
+        public Action removeMe;
+
         [Binding]
         public List<Dropdown.OptionData> Options => CharacterSheetPanel.SkillOptions;
 
-        private string name;
+        private AttributeData data;
         [Binding]
-        public string Name
+        public AttributeData Data
         {
-            get { return name; }
-            set { SetProperty(ref name, value, nameof(Name)); }
+            get { return data; }
+            set { SetProperty(ref data, value, nameof(Data)); }
         }
 
-        private int val;
+        private int index;
+        // We need this to initialize the dropdown to the correct value (sadly).
         [Binding]
-        public int Value
+        public int Index
         {
-            get { return val; }
+            get { return index; }
             set
             {
-                if (SetProperty(ref val, value, nameof(Value)))
+                if (SetProperty(ref index, value, nameof(Index)))
                 {
-                    OnPropertyChanged(nameof(Total));
+                    Data.Name = SkillOptions[index].text;
                 }
             }
         }
-
-        private int buff;
-        [Binding]
-        public int Buff
-        {
-            get { return buff; }
-            set
-            {
-                if (SetProperty(ref buff, value, nameof(Buff)))
-                {
-                    OnPropertyChanged(nameof(Total));
-                }
-            }
-        }
-
-        [Binding]
-        public int Total { get { return Value + Buff; } }
 
         [Binding]
         public void IncrementValue()
         {
-            Value++;
+            Data.Value++;
         }
 
         [Binding]
         public void DecrementValue()
         {
-            Value--;
+            Data.Value--;
         }
 
         [Binding]
         public void IncrementBuff()
         {
-            Buff++;
+            Data.Buff++;
         }
 
         [Binding]
         public void DecrementBuff()
         {
-            Buff--;
+            Data.Buff--;
         }
 
         [Binding]
-        public void UpdateName()
+        public void Remove()
         {
-            OnPropertyChanged(nameof(Name));
+            removeMe?.Invoke();
         }
-
     }
-
-
 
     private string _name;
     [Binding]
@@ -134,24 +117,50 @@ public class CharacterSheetPanel : Panel
 
     void Start()
     {
-        attributes.Add(new Attribute { Name = "Body", Value = 0, Buff = 0 });
-        attributes.Add(new Attribute { Name = "Agility", Value = 0, Buff = 0 });
-        attributes.Add(new Attribute { Name = "Reaction", Value = 0, Buff = 0 });
-        attributes.Add(new Attribute { Name = "Strength", Value = 0, Buff = 0 });
-        attributes.Add(new Attribute { Name = "Willpower", Value = 0, Buff = 0 });
-        attributes.Add(new Attribute { Name = "Logic", Value = 0, Buff = 0 });
-        attributes.Add(new Attribute { Name = "Intuition", Value = 0, Buff = 0 });
-        attributes.Add(new Attribute { Name = "Charisma", Value = 0, Buff = 0 });
-        attributes.Add(new Attribute { Name = "Edge", Value = 0, Buff = 0 });
-        attributes.Add(new Attribute { Name = "Essence", Value = 0, Buff = 0 });
-        attributes.Add(new Attribute { Name = "Initiative", Value = 0, Buff = 0 });
-        attributes.Add(new Attribute { Name = "Magic", Value = 0, Buff = 0 });
-        attributes.Add(new Attribute { Name = "Resonance", Value = 0, Buff = 0 });
+        var savedAttrs = CharacterModel.Instance.Characters.MyCharacter.Attributes;
+        var savedSkills = CharacterModel.Instance.Characters.MyCharacter.Skills;
+        // If we haven't saved our character yet, create new data;
+        foreach (var attr in savedAttrs)
+        {
+            attributes.Add(new Attribute { Data = attr });
+        }
+
+        foreach (var skill in savedSkills)
+        {
+            var newSkill = new Attribute { Data = skill, Index = SkillOptions.FindIndex(option => option.text == skill.Name) };
+            newSkill.removeMe = () => RemoveSkill(newSkill);
+            skills.Add(newSkill);
+
+        }
     }
 
     [Binding]
     public void AddSkill()
     {
-        Skills.Add(new Attribute { Name = "", Value = 0, Buff = 0 });
+        var attr = new Attribute { Data = new AttributeData { Name = "...", Value = 0, Buff = 0 } };
+        attr.removeMe = () => RemoveSkill(attr);
+        Skills.Add(attr);
+    }
+
+    [Binding]
+    public void SaveChanges()
+    {
+        var MyCharacter = CharacterModel.Instance.Characters.MyCharacter;
+        MyCharacter.Attributes.Clear();
+        foreach (var attr in attributes)
+        {
+            MyCharacter.Attributes.Add(attr.Data);
+        }
+        MyCharacter.Skills.Clear();
+        foreach (var skill in skills)
+        {
+            MyCharacter.Skills.Add(skill.Data);
+        }
+        CharacterModel.Instance.Save();
+    }
+
+    private void RemoveSkill(Attribute skill)
+    {
+        Skills.Remove(skill);
     }
 }
