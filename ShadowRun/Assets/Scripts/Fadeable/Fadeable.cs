@@ -115,7 +115,7 @@ public abstract class Fadeable : MonoBehaviour
         IsVisible = false;
         Alpha = 0;
         Active = false;
-		BlocksRaycasts = hitboxDuringFade;
+		BlocksRaycasts = false;
     }
 
 	public virtual void SelfDelayedFadeIn(float delay = 1f) {
@@ -191,6 +191,7 @@ public abstract class Fadeable : MonoBehaviour
         Alpha = endAlpha;
         Active = Alpha != 0;
         isFading = false;
+		BlocksRaycasts = false;
         if (disableOnFadeOut) {
             gameObject.SetActive(false);
         }
