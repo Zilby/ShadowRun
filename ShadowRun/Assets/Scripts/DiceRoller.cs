@@ -75,6 +75,43 @@ public class DiceRoller : MonoBehaviour
     /// </summary>
     public void SetUpDice()
     {
+        diceRolls = new List<DiceRoll>();
+        for(int i = FeedModel.Instance.Messages.Count - 1; i >= 0; i--)
+        {
+            if (FeedModel.Instance.Messages.ToArray<FeedMessageView>()[i].IsTest)
+            {
+                string skill = FeedModel.Instance.Messages.ToArray<FeedMessageView>()[i].Text;
+                skill = skill.Substring(0, skill.Length - 6);
+                skill = skill.Split(' ').Last();
+                print(skill);
+                int skillval = 0;
+                foreach (AttributeData s in CharacterModel.Instance.Characters.MyCharacter.Skills)
+                {
+                    print(s.Name + ": " + s.Value);
+                    if (s.Name.Equals(skill))
+                    {
+                        skillval = s.Value;
+                        break;
+                    }
+                }
+                print("skillval = " + skillval);
+                foreach (AttributeData s in CharacterModel.Instance.Characters.MyCharacter.Attributes)
+                {
+                    print(s.Name + ": " + s.Value);
+                    if (s.Name.Equals(CharacterSheetPanel.SkillNamesToRelatedAttrs[skill]))
+                    {
+                        skillval += s.Value;
+                        break;
+                    }
+                }
+                print("skillval = " + skillval);
+                DiceRoll d6 = new DiceRoll();
+                d6.type = DiceType.D6;
+                d6.number = skillval;
+                diceRolls.Add(d6);
+                break;
+            }
+        }
         foreach (DiceRoll d in diceRolls)
         {
             for (int i = 0; i < d.number; ++i)
