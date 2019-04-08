@@ -38,11 +38,20 @@ public class FeedMessageView : DataBindObject
         set { SetProperty(ref isTest, value, nameof(IsTest)); }
     }
 
-    public FeedMessageView(string sender, string text, bool isTest)
+    private TestData testData;
+    [Binding]
+    public TestData TestData
+    {
+        get { return testData; }
+        set { SetProperty(ref testData, value, nameof(TestData)); }
+    }
+
+    public FeedMessageView(string sender, string text, TestData data = null)
     {
         Sender = sender;
         Text = text;
-        IsTest = isTest;
+        IsTest = data != null;
+        TestData = data;
     }
 
     [Binding]

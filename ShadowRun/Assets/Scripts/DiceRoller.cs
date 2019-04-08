@@ -76,7 +76,7 @@ public class DiceRoller : MonoBehaviour
     public void SetUpDice()
     {
         diceRolls = new List<DiceRoll>();
-        for(int i = FeedModel.Instance.Messages.Count - 1; i >= 0; i--)
+        for (int i = FeedModel.Instance.Messages.Count - 1; i >= 0; i--)
         {
             if (FeedModel.Instance.Messages.ToArray<FeedMessageView>()[i].IsTest)
             {
@@ -98,7 +98,7 @@ public class DiceRoller : MonoBehaviour
                 foreach (AttributeData s in CharacterModel.Instance.Characters.MyCharacter.Attributes)
                 {
                     print(s.Name + ": " + s.Value);
-                    if (s.Name.Equals(CharacterSheetPanel.SkillNamesToRelatedAttrs[skill]))
+                    if (s.Name.Equals(CharacterModel.SkillNamesToRelatedAttrs[skill]))
                     {
                         skillval += s.Value;
                         break;

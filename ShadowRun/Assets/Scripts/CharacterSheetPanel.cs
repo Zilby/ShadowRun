@@ -9,16 +9,6 @@ using UnityWeld.Binding;
 public class CharacterSheetPanel : Panel
 {
 
-    public static Dictionary<string, string> SkillNamesToRelatedAttrs = new Dictionary<string, string>
-    {
-        { "Ranged W.", "Agility" },
-        { "Pistols", "Agility" },
-        { "Shotguns", "Agility" },
-        { "Rifles", "Agility" },
-        { "SMGs", "Agility" },
-        { "Dodge", "Agility" },
-    };
-
     public static List<Dropdown.OptionData> SkillOptions = new List<Dropdown.OptionData>()
     {
         new Dropdown.OptionData("..."),

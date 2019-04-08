@@ -6,6 +6,7 @@ using UnityWeld.Binding;
 [Binding]
 public class LoginPanel : Panel
 {
+
     private string roomName;
     [Binding]
     public string RoomName
@@ -25,12 +26,43 @@ public class LoginPanel : Panel
     [Binding]
     public void CreateRoom()
     {
-        RoomCode = RoomName.GetHashCode().ToString();
+        FeedModel.Instance.Connect(() =>
+        {
+            FeedModel.Instance.CreateChannel(RoomName, (channel, e) =>
+            {
+                if (e != null)
+                {
+                    Debug.LogError(e);
+                    return;
+                }
+                RoomCode = channel.Url;
+                FeedModel.Instance.EnterChannel(RoomCode, (channel2, e2) =>
+                {
+                    if (e != null)
+                    {
+                        Debug.LogError(e2);
+                        return;
+                    }
+                    PanelStack.Instance.PushPanel<FeedPanel>();
+                });
+            });
+        });
     }
 
     [Binding]
     public void EnterRoom()
     {
-        PanelStack.Instance.PushPanel<FeedPanel>();
+        FeedModel.Instance.Connect(() =>
+        {
+            FeedModel.Instance.EnterChannel(RoomCode, (channel, e) =>
+            {
+                if (e != null)
+                {
+                    Debug.LogError(e);
+                    return;
+                }
+                PanelStack.Instance.PushPanel<FeedPanel>();
+            });
+        });
     }
 }

@@ -6,6 +6,17 @@ using UnityWeld.Binding;
 
 public class CharacterModel
 {
+
+    public static Dictionary<string, string> SkillNamesToRelatedAttrs = new Dictionary<string, string>
+    {
+        { "Ranged W.", "Agility" },
+        { "Pistols", "Agility" },
+        { "Shotguns", "Agility" },
+        { "Rifles", "Agility" },
+        { "SMGs", "Agility" },
+        { "Dodge", "Agility" },
+    };
+
     private static CharacterModel instance;
     public static CharacterModel Instance
     {

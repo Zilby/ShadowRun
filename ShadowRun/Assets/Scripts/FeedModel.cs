@@ -1,10 +1,12 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using SendBird;
 using UnityEngine;
 using UnityWeld.Binding;
 
 [Binding]
-public class FeedModel : DataBindObject
+public class FeedModel : DataBindObject, IDisposable
 {
     private static FeedModel instance;
     public static FeedModel Instance
@@ -14,10 +16,13 @@ public class FeedModel : DataBindObject
             if (instance == null)
             {
                 instance = new FeedModel();
+                instance.Init();
             }
             return instance;
         }
     }
+
+    private MonoHost coroutineHost;
 
     private ObservableList<FeedMessageView> messages = new ObservableList<FeedMessageView>();
     [Binding]
@@ -27,9 +32,131 @@ public class FeedModel : DataBindObject
         set { SetProperty(ref messages, value, nameof(Messages)); }
     }
 
-    public void AddMessage(string sender, string text, bool isTest = false)
+    public string RoomCode { get; private set; }
+    private SendBirdClient.ChannelHandler channelHandler;
+    private string chid;
+    private OpenChannel channel;
+
+    private void Init()
     {
-        Messages.Add(new FeedMessageView(sender, text, isTest));
+        coroutineHost = new GameObject().AddComponent<MonoHost>();
+        SendBirdClient.SetupUnityDispatcher(coroutineHost.gameObject);
+        coroutineHost.StartCoroutine(SendBirdClient.StartUnityDispatcher);
+
+        SendBirdClient.Init("71CAF499-268F-49A3-A2F5-9DF09F275FB8");
+
+        channelHandler = new SendBirdClient.ChannelHandler();
+        chid = channelHandler.GetHashCode().ToString();
+        channelHandler.OnMessageReceived += ChannelHandler_OnMessageRecieved;
+        SendBirdClient.AddChannelHandler(chid, channelHandler);
+    }
+
+    public void Dispose()
+    {
+        SendBirdClient.RemoveChannelHandler(chid);
+        channelHandler.OnMessageReceived -= ChannelHandler_OnMessageRecieved;
+    }
+
+    public void Connect(Action onConnected)
+    {
+        if (!PlayerPrefs.HasKey("USER_ID"))
+        {
+            PlayerPrefs.SetString("USER_ID", Guid.NewGuid().ToString());
+        }
+        var userID = PlayerPrefs.GetString("USER_ID");
+
+        SendBirdClient.Connect(userID, (User user, SendBirdException e) =>
+        {
+            if (e != null)
+            {
+                Debug.LogError(e);
+                return;
+            }
+            onConnected?.Invoke();
+        });
+    }
+
+    public void Disconnect()
+    {
+        SendBirdClient.Disconnect(() =>
+        {
+
+        });
+    }
+
+    public void CreateChannel(string name, Action<OpenChannel, Exception> onChannelCreated)
+    {
+        OpenChannel.CreateChannel(name, name.GetHashCode().ToString(), null, (channel, e) =>
+        {
+            if (e != null)
+            {
+                Debug.LogError(e);
+            }
+            else
+            {
+                RoomCode = channel.Url;
+            }
+            onChannelCreated?.Invoke(channel, e);
+        });
+    }
+
+    public void EnterChannel(string url, Action<OpenChannel, Exception> onChannelEntered)
+    {
+        OpenChannel.GetChannel(url, (channel, e) =>
+        {
+            if (e != null)
+            {
+                Debug.LogError(e);
+                onChannelEntered?.Invoke(null, e);
+                return;
+            }
+            channel.Enter(e2 =>
+            {
+                if (e2 != null)
+                {
+                    Debug.LogError(e2);
+                }
+                this.channel = channel;
+                onChannelEntered?.Invoke(channel, e2);
+            });
+        });
+    }
+
+    public void SendMessage(string message)
+    {
+        channel.SendUserMessage(message, (sentMessage, e) =>
+        {
+            if (e != null)
+            {
+                Debug.LogError(e);
+                // Should also make notification
+                return;
+            }
+        });
+    }
+
+    private void ChannelHandler_OnMessageRecieved(BaseChannel baseChannel, BaseMessage baseMessage)
+    {
+        var userMessage = baseMessage as UserMessage;
+        if (userMessage != null)
+        {
+
+            FeedModel.Instance.AddMessage("other", userMessage.Message);
+        }
+        var adminMessage = baseMessage as AdminMessage;
+        if (adminMessage != null)
+        {
+            FeedModel.Instance.AddMessage("other", adminMessage.Message);
+        }
+    }
+
+    public void AddMessage(string sender, string text, TestData testData = null, bool send = false)
+    {
+        Messages.Add(new FeedMessageView(sender, text, testData));
+        if (send)
+        {
+            SendMessage(text);
+        }
     }
 
     private FeedModel() { }
