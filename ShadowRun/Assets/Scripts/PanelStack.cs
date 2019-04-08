@@ -62,7 +62,7 @@ public class PanelStack : DataBindMonobehaviour
     /// <summary>
     /// <typeparam name="T"></typeparam>
     [Binding]
-    public void PushPanel<T>() where T : Panel
+    public void PushPanel<T>(object args = null) where T : Panel
     {
         var panel = GetComponentInChildren<T>(includeInactive: true);
         if (panel == null)
@@ -76,6 +76,7 @@ public class PanelStack : DataBindMonobehaviour
         var newPanel = Panels[Panels.Count - 1];
         newPanel.gameObject.SetActive(true);
         PanelChanged?.Invoke(this, new PanelChangedEventArgs { OldPanel = oldPanel, NewPanel = newPanel, ChangeType = PanelChangeType.PUSH });
+        newPanel.Init(args);
     }
 
     /// <summary>

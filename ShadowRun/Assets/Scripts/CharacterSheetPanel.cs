@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityWeld;
@@ -9,16 +10,19 @@ using UnityWeld.Binding;
 public class CharacterSheetPanel : Panel
 {
 
-    public static List<Dropdown.OptionData> SkillOptions = new List<Dropdown.OptionData>()
-    {
-        new Dropdown.OptionData("..."),
-        new Dropdown.OptionData("Ranged W."),
-        new Dropdown.OptionData("Pistols"),
-        new Dropdown.OptionData("Shotguns"),
-        new Dropdown.OptionData("Rifles"),
-        new Dropdown.OptionData("SMGs"),
-        new Dropdown.OptionData("Dodge"),
-    };
+    public static List<Dropdown.OptionData> SkillOptions = CharacterModel.SkillNamesToRelatedAttrs.Keys
+        .Select(key => new Dropdown.OptionData(key))
+        .ToList();
+    // new List<Dropdown.OptionData>()
+    // {
+    //     new Dropdown.OptionData("..."),
+    //     new Dropdown.OptionData("Ranged W."),
+    //     new Dropdown.OptionData("Pistols"),
+    //     new Dropdown.OptionData("Shotguns"),
+    //     new Dropdown.OptionData("Rifles"),
+    //     new Dropdown.OptionData("SMGs"),
+    //     new Dropdown.OptionData("Dodge"),
+    // };
 
     [Binding]
     public class Attribute : DataBindObject

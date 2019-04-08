@@ -57,6 +57,6 @@ public class FeedMessageView : DataBindObject
     [Binding]
     public void LinkToDiceRoller()
     {
-        PanelStack.Instance.PushPanel<DiceRollPanel>();
+        PanelStack.Instance.PushPanel<DiceRollPanel>(TestData);
     }
 }

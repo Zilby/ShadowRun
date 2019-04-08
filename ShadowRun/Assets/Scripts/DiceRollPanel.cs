@@ -6,6 +6,7 @@ using UnityWeld.Binding;
 [Binding]
 public class DiceRollPanel : Panel
 {
+
     private bool rolled;
     [Binding]
     public bool Rolled
@@ -22,12 +23,20 @@ public class DiceRollPanel : Panel
         set { SetProperty(ref finished, value, nameof(Finished)); }
     }
 
-    private int result;
+    private int fivesAndSixes;
     [Binding]
-    public int Result
+    public int FivesAndSixes
     {
-        get { return result; }
-        set { SetProperty(ref result, value, nameof(Result)); }
+        get { return fivesAndSixes; }
+        set { SetProperty(ref fivesAndSixes, value, nameof(FivesAndSixes)); }
+    }
+
+    private int ones;
+    [Binding]
+    public int Ones
+    {
+        get { return ones; }
+        set { SetProperty(ref ones, value, nameof(Ones)); }
     }
 
     private bool success;
@@ -38,27 +47,63 @@ public class DiceRollPanel : Panel
         set { SetProperty(ref success, value, nameof(Success)); }
     }
 
+    private bool glitch;
+    [Binding]
+    public bool Glitch
+    {
+        get { return glitch; }
+        set { SetProperty(ref glitch, value, nameof(Glitch)); }
+    }
+
+    private bool critGlitch;
+    [Binding]
+    public bool CritGlitch
+    {
+        get { return critGlitch; }
+        set { SetProperty(ref critGlitch, value, nameof(CritGlitch)); }
+    }
+
+    private TestData testData;
+    [Binding]
+    public TestData TestData
+    {
+        get { return testData; }
+        set { SetProperty(ref testData, value, nameof(TestData)); }
+    }
+
     [SerializeField]
     private DiceRoller diceRoller;
 
-    // Start is called before the first frame update
-    void OnEnable()
+    public override void Init(object args = null)
     {
         if (diceRoller == null)
         {
             Debug.LogError("Dice roller cannot be null");
             return;
         }
+
+        TestData = args as TestData;
+
+        if (TestData == null)
+        {
+            Debug.LogError("Cannot make a roll without a test");
+            BackOut();
+            return;
+        }
+
         diceRoller.diceRolls.Clear();
         diceRoller.diceRolls.Add(new DiceRoller.DiceRoll { type = DiceRoller.DiceType.D6, number = 50 });
-        diceRoller.SetUpDice();
+        diceRoller.SetUpDice(TestData);
     }
 
     void OnDisable()
     {
         Rolled = false;
         Finished = false;
-        Result = 0;
+        FivesAndSixes = 0;
+        Ones = 0;
+        Glitch = false;
+        CritGlitch = false;
         diceRoller.ResetRoller();
     }
 
@@ -93,12 +138,17 @@ public class DiceRollPanel : Panel
         Rolled = true;
         yield return new WaitUntil(() =>
         {
-            return (diceRoller.GetDiceTotal()) != null;
+            return (diceRoller.GetDiceTotal(out _, out _, out _)) != null;
         });
         Finished = true;
-        Result = diceRoller.GetDiceTotal().Value;
+
+        int result = diceRoller.GetDiceTotal(out var fs, out var o, out var numRolled).Value;
+        FivesAndSixes = fs;
+        Ones = o;
         // Set success based on equation
-        Success = true;
+        Success = FivesAndSixes >= TestData.SkillThreshold;
+        Glitch = Ones > numRolled / 2;
+        CritGlitch = Glitch && !Success;
     }
 
     [Binding]

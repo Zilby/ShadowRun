@@ -42,8 +42,19 @@ public class FeedPanel : Panel
         PanelStack.Instance.PushPanel<TestMakerPanel>();
     }
 
+    private void OnEnable()
+    {
+        StartCoroutine(WaitThenFixCanvas());
+    }
+
     private void OnCollectionChanged(object sender, NotifyCollectionChangedEventArgs args)
     {
+        StartCoroutine(WaitThenFixCanvas());
+    }
+
+    private IEnumerator WaitThenFixCanvas()
+    {
+        yield return null;
         Canvas.ForceUpdateCanvases();
         scrollview.enabled = false;
         scrollview.enabled = true;

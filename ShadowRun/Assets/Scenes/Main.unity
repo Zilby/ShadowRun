@@ -254,6 +254,16 @@ PrefabInstance:
       propertyPath: diceRoller
       value: 
       objectReference: {fileID: 608558447023202636}
+    - target: {fileID: 7195585008720100543, guid: e5498da5793de5e40aa7c0cc625880b1,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7195585008720100543, guid: e5498da5793de5e40aa7c0cc625880b1,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e5498da5793de5e40aa7c0cc625880b1, type: 3}
 --- !u!224 &55047332 stripped

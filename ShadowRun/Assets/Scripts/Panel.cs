@@ -6,6 +6,11 @@ using UnityWeld.Binding;
 [Binding]
 public class Panel : DataBindMonobehaviour
 {
+    public virtual void Init(object args = null)
+    {
+
+    }
+
     [Binding]
     public void BackOut()
     {

@@ -49,69 +49,41 @@ public class DiceRoller : MonoBehaviour
         get { return DICE_SPACING + UnityEngine.Random.Range(-0.002f, 0.002f); }
     }
 
-    // For testing purposes
-    // public void Update()
-    // {
-    //     if (Input.GetKeyDown(KeyCode.S))
-    //     {
-    //         SetUpDice();
-    //     }
-    //     if (Input.GetKeyDown(KeyCode.R))
-    //     {
-    //         RollDice();
-    //     }
-    //     if (Input.GetKeyDown(KeyCode.G))
-    //     {
-    //         print(GetDiceTotal());
-    //     }
-    //     if (Input.GetKeyDown(KeyCode.X))
-    //     {
-    //         ResetRoller();
-    //     }
-    // }
-
     /// <summary>
     /// Sets up all the currently stored dice. 
     /// </summary>
-    public void SetUpDice()
+    public void SetUpDice(TestData data)
     {
         diceRolls = new List<DiceRoll>();
-        for (int i = FeedModel.Instance.Messages.Count - 1; i >= 0; i--)
+
+        string skill = data.PlayerSkill;
+        print(skill);
+        int skillval = 0;
+        foreach (AttributeData s in CharacterModel.Instance.Characters.MyCharacter.Skills)
         {
-            if (FeedModel.Instance.Messages.ToArray<FeedMessageView>()[i].IsTest)
+            print(s.Name + ": " + s.Value);
+            if (s.Name.Equals(skill))
             {
-                string skill = FeedModel.Instance.Messages.ToArray<FeedMessageView>()[i].Text;
-                skill = skill.Substring(0, skill.Length - 6);
-                skill = skill.Split(' ').Last();
-                print(skill);
-                int skillval = 0;
-                foreach (AttributeData s in CharacterModel.Instance.Characters.MyCharacter.Skills)
-                {
-                    print(s.Name + ": " + s.Value);
-                    if (s.Name.Equals(skill))
-                    {
-                        skillval = s.Value;
-                        break;
-                    }
-                }
-                print("skillval = " + skillval);
-                foreach (AttributeData s in CharacterModel.Instance.Characters.MyCharacter.Attributes)
-                {
-                    print(s.Name + ": " + s.Value);
-                    if (s.Name.Equals(CharacterModel.SkillNamesToRelatedAttrs[skill]))
-                    {
-                        skillval += s.Value;
-                        break;
-                    }
-                }
-                print("skillval = " + skillval);
-                DiceRoll d6 = new DiceRoll();
-                d6.type = DiceType.D6;
-                d6.number = skillval;
-                diceRolls.Add(d6);
+                skillval = s.Value;
                 break;
             }
         }
+        print("skillval = " + skillval);
+        foreach (AttributeData s in CharacterModel.Instance.Characters.MyCharacter.Attributes)
+        {
+            print(s.Name + ": " + s.Value);
+            if (s.Name.Equals(CharacterModel.SkillNamesToRelatedAttrs[skill]))
+            {
+                skillval += s.Value;
+                break;
+            }
+        }
+        print("skillval = " + skillval);
+        DiceRoll d6 = new DiceRoll();
+        d6.type = DiceType.D6;
+        d6.number = skillval;
+        diceRolls.Add(d6);
+
         foreach (DiceRoll d in diceRolls)
         {
             for (int i = 0; i < d.number; ++i)
@@ -158,14 +130,25 @@ public class DiceRoller : MonoBehaviour
     /// Gets the current total of all the dice. 
     /// </summary>
     /// <returns></returns>
-    public int? GetDiceTotal()
+    public int? GetDiceTotal(out int fivesAndSixes, out int ones, out int numDice)
     {
         int? total = 0;
+        fivesAndSixes = 0;
+        ones = 0;
+        numDice = diceToBeRolled.Count;
         foreach (Dice d in diceToBeRolled)
         {
             if (d.Value == null)
             {
                 return null;
+            }
+            if (d.Value >= 5)
+            {
+                fivesAndSixes++;
+            }
+            if (d.Value <= 1)
+            {
+                ones++;
             }
             total += d.Value;
         }
