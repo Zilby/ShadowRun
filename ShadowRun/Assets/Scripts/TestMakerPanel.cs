@@ -63,7 +63,8 @@ public class TestMakerPanel : Panel
         {
             PlayerSkill = Skill.text,
             SkillThreshold = Threshold
-        });
+        },
+        send: true);
         Debug.Log($"New test for {Skill.text} at threshold {Threshold}");
         PanelStack.Instance.PopPanel();
         NotificationSystem.DisplayNotification("Test Created");

@@ -138,9 +138,9 @@ public class FeedModel : DataBindObject, IDisposable
         });
     }
 
-    public void SendMessage(string message)
+    public void SendMessage(string message, ExtraData testData = null)
     {
-        channel.SendUserMessage(message, (sentMessage, e) =>
+        channel.SendUserMessage(message, testData.ToString(), (sentMessage, e) =>
         {
             if (e != null)
             {
@@ -156,13 +156,13 @@ public class FeedModel : DataBindObject, IDisposable
         var userMessage = baseMessage as UserMessage;
         if (userMessage != null)
         {
-
-            FeedModel.Instance.AddMessage("other", userMessage.Message);
+            var data = ExtraData.FromString(userMessage.Data);
+            FeedModel.Instance.AddMessage(data.Sender, userMessage.Message, data.TestData);
         }
         var adminMessage = baseMessage as AdminMessage;
         if (adminMessage != null)
         {
-            FeedModel.Instance.AddMessage("other", adminMessage.Message);
+            FeedModel.Instance.AddMessage("Admin", adminMessage.Message);
         }
     }
 
@@ -171,7 +171,11 @@ public class FeedModel : DataBindObject, IDisposable
         Messages.Add(new FeedMessageView(sender, text, testData));
         if (send)
         {
-            SendMessage(text);
+            SendMessage(text, new ExtraData
+            {
+                Sender = sender,
+                TestData = testData
+            });
         }
     }
 

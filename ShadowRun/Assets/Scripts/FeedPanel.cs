@@ -49,7 +49,10 @@ public class FeedPanel : Panel
 
     private void OnCollectionChanged(object sender, NotifyCollectionChangedEventArgs args)
     {
-        StartCoroutine(WaitThenFixCanvas());
+        if (enabled && gameObject.activeSelf)
+        {
+            StartCoroutine(WaitThenFixCanvas());
+        }
     }
 
     private IEnumerator WaitThenFixCanvas()
