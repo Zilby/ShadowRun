@@ -35,16 +35,7 @@ public class LoginPanel : Panel
                     Debug.LogError(e);
                     return;
                 }
-                RoomCode = channel.Url;
-                FeedModel.Instance.EnterChannel(RoomCode, (channel2, e2) =>
-                {
-                    if (e != null)
-                    {
-                        Debug.LogError(e2);
-                        return;
-                    }
-                    PanelStack.Instance.PushPanel<FeedPanel>();
-                });
+                RoomCode = channel.Data;
             });
         });
     }

@@ -86,7 +86,7 @@ public class FeedModel : DataBindObject, IDisposable
 
     public void CreateChannel(string name, Action<OpenChannel, Exception> onChannelCreated)
     {
-        OpenChannel.CreateChannel(name, name.GetHashCode().ToString(), null, (channel, e) =>
+        OpenChannel.CreateChannel(name, null, name.GetHashCode().ToString(), (channel, e) =>
         {
             if (e != null)
             {
@@ -94,15 +94,15 @@ public class FeedModel : DataBindObject, IDisposable
             }
             else
             {
-                RoomCode = channel.Url;
+                RoomCode = channel.Data;
             }
             onChannelCreated?.Invoke(channel, e);
         });
     }
 
-    public void EnterChannel(string url, Action<OpenChannel, Exception> onChannelEntered)
+    public void EnterChannel(string name, Action<OpenChannel, Exception> onChannelEntered)
     {
-        OpenChannel.GetChannel(url, (channel, e) =>
+        GetChannelFromList(name, (channel, e) =>
         {
             if (e != null)
             {
@@ -119,6 +119,22 @@ public class FeedModel : DataBindObject, IDisposable
                 this.channel = channel;
                 onChannelEntered?.Invoke(channel, e2);
             });
+        });
+    }
+
+    private void GetChannelFromList(string channelMetadata, Action<OpenChannel, SendBirdException> resultHandler)
+    {
+        OpenChannelListQuery query = OpenChannel.CreateOpenChannelListQuery();
+        query.Next((channels, e) =>
+        {
+            if (e != null)
+            {
+                Debug.LogError(e);
+                resultHandler?.Invoke(null, e);
+                return;
+            }
+            var channel = channels.Find(c => c.Data == channelMetadata);
+            resultHandler?.Invoke(channel, e);
         });
     }
 
