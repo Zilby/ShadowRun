@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: TestLinkColorOptions
   m_EditorClassIdentifier: 
   FalseColor: {r: 0, g: 0, b: 0, a: 1}
-  TrueColor: {r: 0, g: 0.54639816, b: 1, a: 1}
+  TrueColor: {r: 0, g: 0.31883094, b: 0.5849056, a: 1}
