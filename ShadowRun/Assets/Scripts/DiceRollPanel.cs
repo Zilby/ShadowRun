@@ -6,6 +6,84 @@ using UnityWeld.Binding;
 [Binding]
 public class DiceRollPanel : Panel
 {
+    [SerializeField]
+    private FadeableUI betweenRollsCurtain;
+
+    [Binding]
+    public class DiceResult : DataBindObject
+    {
+        private int fivesAndSixes;
+        [Binding]
+        public int FivesAndSixes
+        {
+            get { return fivesAndSixes; }
+            set { SetProperty(ref fivesAndSixes, value, nameof(FivesAndSixes)); }
+        }
+
+        private int ones;
+        [Binding]
+        public int Ones
+        {
+            get { return ones; }
+            set { SetProperty(ref ones, value, nameof(Ones)); }
+        }
+
+        private bool success;
+        [Binding]
+        public bool Success
+        {
+            get { return success; }
+            set { SetProperty(ref success, value, nameof(Success)); }
+        }
+
+        private bool glitch;
+        [Binding]
+        public bool Glitch
+        {
+            get { return glitch; }
+            set { SetProperty(ref glitch, value, nameof(Glitch)); }
+        }
+
+        private bool critGlitch;
+        [Binding]
+        public bool CritGlitch
+        {
+            get { return critGlitch; }
+            set { SetProperty(ref critGlitch, value, nameof(CritGlitch)); }
+        }
+    }
+
+    private string opponentName;
+    [Binding]
+    public string OpponentName
+    {
+        get { return opponentName; }
+        set { SetProperty(ref opponentName, value, nameof(OpponentName)); }
+    }
+
+    private DiceResult playerResult;
+    [Binding]
+    public DiceResult PlayerResult
+    {
+        get { return playerResult; }
+        set { SetProperty(ref playerResult, value, nameof(PlayerResult)); }
+    }
+
+    private DiceResult opponentResult;
+    [Binding]
+    public DiceResult OpponentResult
+    {
+        get { return opponentResult; }
+        set { SetProperty(ref opponentResult, value, nameof(OpponentResult)); }
+    }
+
+    private bool isSuccessTest;
+    [Binding]
+    public bool IsSuccessTest
+    {
+        get { return isSuccessTest; }
+        set { SetProperty(ref isSuccessTest, value, nameof(IsSuccessTest)); }
+    }
 
     private bool rolled;
     [Binding]
@@ -21,46 +99,6 @@ public class DiceRollPanel : Panel
     {
         get { return finished; }
         set { SetProperty(ref finished, value, nameof(Finished)); }
-    }
-
-    private int fivesAndSixes;
-    [Binding]
-    public int FivesAndSixes
-    {
-        get { return fivesAndSixes; }
-        set { SetProperty(ref fivesAndSixes, value, nameof(FivesAndSixes)); }
-    }
-
-    private int ones;
-    [Binding]
-    public int Ones
-    {
-        get { return ones; }
-        set { SetProperty(ref ones, value, nameof(Ones)); }
-    }
-
-    private bool success;
-    [Binding]
-    public bool Success
-    {
-        get { return success; }
-        set { SetProperty(ref success, value, nameof(Success)); }
-    }
-
-    private bool glitch;
-    [Binding]
-    public bool Glitch
-    {
-        get { return glitch; }
-        set { SetProperty(ref glitch, value, nameof(Glitch)); }
-    }
-
-    private bool critGlitch;
-    [Binding]
-    public bool CritGlitch
-    {
-        get { return critGlitch; }
-        set { SetProperty(ref critGlitch, value, nameof(CritGlitch)); }
     }
 
     private TestData testData;
@@ -91,19 +129,20 @@ public class DiceRollPanel : Panel
             return;
         }
 
-        diceRoller.diceRolls.Clear();
-        diceRoller.diceRolls.Add(new DiceRoller.DiceRoll { type = DiceRoller.DiceType.D6, number = 50 });
-        diceRoller.SetUpDice(TestData);
+        IsSuccessTest = string.IsNullOrEmpty(TestData.OpponentSkill);
+
+        PlayerResult = new DiceResult();
+        OpponentResult = new DiceResult();
     }
 
     void OnDisable()
     {
-        Rolled = false;
-        Finished = false;
-        FivesAndSixes = 0;
-        Ones = 0;
-        Glitch = false;
-        CritGlitch = false;
+        // Rolled = false;
+        // Finished = false;
+        // FivesAndSixes = 0;
+        // Ones = 0;
+        // Glitch = false;
+        // CritGlitch = false;
         diceRoller.ResetRoller();
     }
 
@@ -132,23 +171,42 @@ public class DiceRollPanel : Panel
         }
     }
 
-    private IEnumerator WaitForResult()
+    private IEnumerator WaitForResult(DiceResult results, int threshold, bool lastRoll)
     {
         diceRoller.RollDice();
-        Rolled = true;
         yield return new WaitUntil(() =>
         {
             return (diceRoller.GetDiceTotal(out _, out _, out _)) != null;
         });
-        Finished = true;
 
         int result = diceRoller.GetDiceTotal(out var fs, out var o, out var numRolled).Value;
-        FivesAndSixes = fs;
-        Ones = o;
+        results.FivesAndSixes = fs;
+        results.Ones = o;
         // Set success based on equation
-        Success = FivesAndSixes >= TestData.SkillThreshold;
-        Glitch = Ones > numRolled / 2;
-        CritGlitch = Glitch && !Success;
+        results.Success = results.FivesAndSixes >= threshold;
+        results.Glitch = results.Ones > numRolled / 2;
+        results.CritGlitch = results.Glitch && !results.Success;
+    }
+
+    private IEnumerator WaitForResultSuccess()
+    {
+        diceRoller.SetUpDice(CalculateMyDice(TestData));
+        yield return WaitForResult(PlayerResult, TestData.SkillThreshold, false);
+        Finished = true;
+
+
+    }
+
+    private IEnumerator WaitForResultOpposed()
+    {
+        diceRoller.SetUpDice(CalculateMyDice(TestData));
+        yield return WaitForResult(PlayerResult, 0, false);
+        yield return betweenRollsCurtain.FadeIn();
+        diceRoller.SetUpDice(TestData.OpponentSkillValue + TestData.OpponentPairedAttributeValue);
+        yield return betweenRollsCurtain.FadeOut();
+        RollDice();
+        yield return WaitForResult(OpponentResult, PlayerResult.FivesAndSixes, false);
+        Finished = true;
     }
 
     [Binding]
@@ -156,7 +214,40 @@ public class DiceRollPanel : Panel
     {
         if (!Rolled)
         {
-            StartCoroutine(WaitForResult());
+            Rolled = true;
+            if (IsSuccessTest)
+            {
+                StartCoroutine(WaitForResultSuccess());
+            }
+            else
+            {
+                StartCoroutine(WaitForResultOpposed());
+            }
         }
+    }
+
+    private int CalculateMyDice(TestData data)
+    {
+        var skill = data.PlayerSkill;
+        int numDice = 0;
+        foreach (AttributeData s in CharacterModel.Instance.Characters.MyCharacter.Skills)
+        {
+            print(s.Name + ": " + s.Value);
+            if (s.Name.Equals(skill))
+            {
+                numDice = s.Value;
+                break;
+            }
+        }
+        foreach (AttributeData s in CharacterModel.Instance.Characters.MyCharacter.Attributes)
+        {
+            print(s.Name + ": " + s.Value);
+            if (s.Name.Equals(CharacterModel.SkillNamesToRelatedAttrs[skill]))
+            {
+                numDice += s.Value;
+                break;
+            }
+        }
+        return numDice;
     }
 }

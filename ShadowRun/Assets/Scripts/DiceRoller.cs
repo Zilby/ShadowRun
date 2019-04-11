@@ -34,7 +34,7 @@ public class DiceRoller : MonoBehaviour
     /// <summary>
     /// List of all the dice and how many of each to roll. 
     /// </summary>
-    public List<DiceRoll> diceRolls;
+    public List<DiceRoll> diceRolls = new List<DiceRoll>();
 
     private List<Dice> diceToBeRolled = new List<Dice>();
 
@@ -52,36 +52,12 @@ public class DiceRoller : MonoBehaviour
     /// <summary>
     /// Sets up all the currently stored dice. 
     /// </summary>
-    public void SetUpDice(TestData data)
+    public void SetUpDice(int numDice)
     {
-        diceRolls = new List<DiceRoll>();
-
-        string skill = data.PlayerSkill;
-        print(skill);
-        int skillval = 0;
-        foreach (AttributeData s in CharacterModel.Instance.Characters.MyCharacter.Skills)
-        {
-            print(s.Name + ": " + s.Value);
-            if (s.Name.Equals(skill))
-            {
-                skillval = s.Value;
-                break;
-            }
-        }
-        print("skillval = " + skillval);
-        foreach (AttributeData s in CharacterModel.Instance.Characters.MyCharacter.Attributes)
-        {
-            print(s.Name + ": " + s.Value);
-            if (s.Name.Equals(CharacterModel.SkillNamesToRelatedAttrs[skill]))
-            {
-                skillval += s.Value;
-                break;
-            }
-        }
-        print("skillval = " + skillval);
+        diceRolls.Clear();
         DiceRoll d6 = new DiceRoll();
         d6.type = DiceType.D6;
-        d6.number = skillval;
+        d6.number = numDice;
         diceRolls.Add(d6);
 
         foreach (DiceRoll d in diceRolls)
