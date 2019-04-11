@@ -103,6 +103,14 @@ public class CharacterData
 public class Character
 {
     [SerializeField]
+    private string name;
+    public string Name
+    {
+        get { return name; }
+        set { name = value; }
+    }
+
+    [SerializeField]
     private List<AttributeData> attributes;
     public List<AttributeData> Attributes
     {
