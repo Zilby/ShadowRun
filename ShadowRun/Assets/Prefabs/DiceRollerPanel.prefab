@@ -248,6 +248,7 @@ GameObject:
   - component: {fileID: 7508250097404774927}
   - component: {fileID: 3135001547630907036}
   - component: {fileID: 5572552468307349414}
+  - component: {fileID: 581495840731461320}
   m_Layer: 5
   m_Name: ResultsSuccessTest
   m_TagString: Untagged
@@ -314,6 +315,21 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
+--- !u!114 &581495840731461320
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1953024921812647349}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 646943ffb3e41cd44b3a2b14d8da3bca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  viewAdapterTypeName: 
+  viewAdapterOptions: {fileID: 0}
+  viewModelPropertyName: DiceRollPanel.Finished
 --- !u!1 &2390198998921118154
 GameObject:
   m_ObjectHideFlags: 0
@@ -2091,6 +2107,7 @@ GameObject:
   - component: {fileID: 5303154480830673407}
   - component: {fileID: 2939804390626716882}
   - component: {fileID: 1172787070198677163}
+  - component: {fileID: 2620529282239566152}
   m_Layer: 5
   m_Name: ResultsOpposedTest
   m_TagString: Untagged
@@ -2180,6 +2197,21 @@ MonoBehaviour:
   m_ChildForceExpandHeight: 1
   m_ChildControlWidth: 0
   m_ChildControlHeight: 0
+--- !u!114 &2620529282239566152
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8447055126628137808}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 646943ffb3e41cd44b3a2b14d8da3bca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  viewAdapterTypeName: 
+  viewAdapterOptions: {fileID: 0}
+  viewModelPropertyName: DiceRollPanel.Finished
 --- !u!1 &9074918105556678463
 GameObject:
   m_ObjectHideFlags: 0
