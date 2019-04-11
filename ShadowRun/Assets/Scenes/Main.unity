@@ -124,6 +124,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: DiceRollerPanel
       objectReference: {fileID: 0}
+    - target: {fileID: 7960974319296389707, guid: e5498da5793de5e40aa7c0cc625880b1,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7960974319296389711, guid: e5498da5793de5e40aa7c0cc625880b1,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -308,7 +313,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0.5377358, g: 0.5377358, b: 0.5377358, a: 1}
+  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 1}
   m_projectionMatrixMode: 1
   m_SensorSize: {x: 36, y: 24}
   m_LensShift: {x: 0, y: 0}
@@ -624,6 +629,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Login
       objectReference: {fileID: 0}
+    - target: {fileID: 7960974319296389707, guid: 05873e46c572bff49a0495ce4403fdcc,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7960974319296389711, guid: 05873e46c572bff49a0495ce4403fdcc,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -729,11 +739,6 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
-    - target: {fileID: 7931801099318621036, guid: 05873e46c572bff49a0495ce4403fdcc,
-        type: 3}
-      propertyPath: messageClient
-      value: 
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 05873e46c572bff49a0495ce4403fdcc, type: 3}
 --- !u!224 &1128024465 stripped
@@ -765,6 +770,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: TestMakerPanel
+      objectReference: {fileID: 0}
+    - target: {fileID: 7960974319296389707, guid: 19847fb704eda5b449dbfa957aff478f,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7960974319296389711, guid: 19847fb704eda5b449dbfa957aff478f,
         type: 3}
@@ -1023,6 +1033,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: CharacterSheet
       objectReference: {fileID: 0}
+    - target: {fileID: 2796042312105124434, guid: d4941f0665a7bfa468efedeac33e445f,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2796042312105124435, guid: d4941f0665a7bfa468efedeac33e445f,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1153,11 +1168,6 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2796042313251163255, guid: d4941f0665a7bfa468efedeac33e445f,
-        type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0.00014808471
-      objectReference: {fileID: 0}
     - target: {fileID: 2796042313275031080, guid: d4941f0665a7bfa468efedeac33e445f,
         type: 3}
       propertyPath: m_AnchorMin.y
@@ -1171,7 +1181,7 @@ PrefabInstance:
     - target: {fileID: 2796042313275031080, guid: d4941f0665a7bfa468efedeac33e445f,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 20
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2796042313275031080, guid: d4941f0665a7bfa468efedeac33e445f,
         type: 3}
@@ -1181,7 +1191,7 @@ PrefabInstance:
     - target: {fileID: 2796042313275031080, guid: d4941f0665a7bfa468efedeac33e445f,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 1040
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2796042313275031080, guid: d4941f0665a7bfa468efedeac33e445f,
         type: 3}
@@ -1251,7 +1261,7 @@ PrefabInstance:
     - target: {fileID: 2796042312087151486, guid: d4941f0665a7bfa468efedeac33e445f,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 20
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2796042312087151486, guid: d4941f0665a7bfa468efedeac33e445f,
         type: 3}
@@ -1261,7 +1271,7 @@ PrefabInstance:
     - target: {fileID: 2796042312087151486, guid: d4941f0665a7bfa468efedeac33e445f,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 1040
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2796042312087151486, guid: d4941f0665a7bfa468efedeac33e445f,
         type: 3}
@@ -1351,6 +1361,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: DiceRoller
+      objectReference: {fileID: 0}
+    - target: {fileID: 7732634703596369922, guid: 1968611d267352641bd86487854f51e2,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7732634703596369920, guid: 1968611d267352641bd86487854f51e2,
         type: 3}
@@ -1536,6 +1551,18 @@ PrefabInstance:
       propertyPath: m_isInputParsingRequired
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6390204452392896012, guid: 5c3e926d7282644b294e4c1dffd959eb,
+        type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 27139a60a1f077d469acfdbb346c9bc3,
+        type: 2}
+    - target: {fileID: 6390204452392896012, guid: 5c3e926d7282644b294e4c1dffd959eb,
+        type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 21411815420892672, guid: 27139a60a1f077d469acfdbb346c9bc3,
+        type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5c3e926d7282644b294e4c1dffd959eb, type: 3}
 --- !u!1001 &7960974319501457355
@@ -1549,6 +1576,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: FeedPanel
+      objectReference: {fileID: 0}
+    - target: {fileID: 7960974319296389707, guid: 587cefa1b5b526a43b84a18d9ea7b95f,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7960974319296389711, guid: 587cefa1b5b526a43b84a18d9ea7b95f,
         type: 3}
@@ -1699,11 +1731,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7960974319348584820, guid: 587cefa1b5b526a43b84a18d9ea7b95f,
-        type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0.00012207031
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 587cefa1b5b526a43b84a18d9ea7b95f, type: 3}
