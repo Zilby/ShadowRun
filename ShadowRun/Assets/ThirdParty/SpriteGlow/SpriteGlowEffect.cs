@@ -1,0 +1,108 @@
+﻿using UnityEngine;
+using UnityEngine.UI;
+
+namespace SpriteGlow
+{
+    /// <summary>
+    /// Adds an HDR outline over the <see cref="SpriteRenderer"/>'s sprite borders.
+    /// Can be used in conjuction with bloom post-processing to create a glow effect.
+    /// </summary>
+    [AddComponentMenu("Effects/Sprite Glow")]
+    [RequireComponent(typeof(Image)), DisallowMultipleComponent, ExecuteInEditMode]
+    public class SpriteGlowEffect : MonoBehaviour
+    {
+        public Image Renderer { get; private set; }
+        public Color GlowColor
+        {
+            get { return glowColor; }
+            set { if (glowColor != value) { glowColor = value; SetMaterialProperties(); } }
+        }
+        public float GlowBrightness
+        {
+            get { return glowBrightness; }
+            set { if (glowBrightness != value) { glowBrightness = value; SetMaterialProperties(); } }
+        }
+        public int OutlineWidth
+        {
+            get { return outlineWidth; }
+            set { if (outlineWidth != value) { outlineWidth = value; SetMaterialProperties(); } }
+        }
+        public float AlphaThreshold
+        {
+            get { return alphaThreshold; }
+            set { if (alphaThreshold != value) { alphaThreshold = value; SetMaterialProperties(); } }
+        }
+        public bool DrawOutside
+        {
+            get { return drawOutside; }
+            set { if (drawOutside != value) { drawOutside = value; SetMaterialProperties(); } }
+        }
+        public bool EnableInstancing
+        {
+            get { return enableInstancing; }
+            set { if (enableInstancing != value) { enableInstancing = value; SetMaterialProperties(); } }
+        }
+
+        [Tooltip("Base color of the glow.")]
+        [SerializeField] private Color glowColor = Color.white;
+        [Tooltip("The brightness (power) of the glow."), Range(1, 10)]
+        [SerializeField] private float glowBrightness = 2f;
+        [Tooltip("Width of the outline, in texels."), Range(0, 10)]
+        [SerializeField] private int outlineWidth = 1;
+        [Tooltip("Threshold to determine sprite borders."), Range(0f, 1f)]
+        [SerializeField] private float alphaThreshold = .01f;
+        [Tooltip("Whether the outline should only be drawn outside of the sprite borders. Make sure sprite texture has sufficient transparent space for the required outline width.")]
+        [SerializeField] private bool drawOutside = false;
+        [Tooltip("Whether to enable GPU instancing.")]
+        [SerializeField] private bool enableInstancing = false;
+
+        private static readonly int isOutlineEnabledId = Shader.PropertyToID("_IsOutlineEnabled");
+        private static readonly int outlineColorId = Shader.PropertyToID("_OutlineColor");
+        private static readonly int outlineSizeId = Shader.PropertyToID("_OutlineSize");
+        private static readonly int alphaThresholdId = Shader.PropertyToID("_AlphaThreshold");
+
+        private MaterialPropertyBlock materialProperties;
+
+        private void Awake ()
+        {
+            Renderer = GetComponent<Image>();
+        }
+
+        private void OnEnable ()
+        {
+            SetMaterialProperties();
+        }
+
+        private void OnDisable ()
+        {
+            SetMaterialProperties();
+        }
+
+        private void OnValidate ()
+        {
+            if (!isActiveAndEnabled) return;
+
+            // Update material properties when changing serialized fields with editor GUI.
+            SetMaterialProperties();
+        }
+
+        private void OnDidApplyAnimationProperties ()
+        {
+            // Update material properties when changing serialized fields with Unity animation.
+            SetMaterialProperties();
+        }
+
+        private void SetMaterialProperties ()
+        {
+            if (!Renderer) return;
+
+            Renderer.material = new Material(SpriteGlowMaterial.GetSharedFor(this));
+
+
+			Renderer.material.SetFloat(isOutlineEnabledId, isActiveAndEnabled ? 1 : 0);
+			Renderer.material.SetColor(outlineColorId, GlowColor * GlowBrightness);
+			Renderer.material.SetFloat(outlineSizeId, OutlineWidth);
+			Renderer.material.SetFloat(alphaThresholdId, AlphaThreshold);
+        }
+    }
+}
