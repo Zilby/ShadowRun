@@ -55,7 +55,8 @@ public class TestMakerPanel : Panel
         {
             Skill = option;
             Debug.Log($"option set to {option}");
-        });
+        },
+        SkillOptions.IndexOf(Skill));
     }
 
     [Binding]

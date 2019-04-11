@@ -17,8 +17,7 @@ public class CharacterSheetPanel : Panel
     [Binding]
     public class Attribute : DataBindObject
     {
-        public Action removeMe;
-        public Action unsavedChanges;
+        private CharacterSheetPanel panel;
 
         [Binding]
         public List<string> Options => CharacterSheetPanel.SkillOptions;
@@ -31,63 +30,59 @@ public class CharacterSheetPanel : Panel
             set { SetProperty(ref data, value, nameof(Data)); }
         }
 
-        private int index;
-        // We need this to initialize the dropdown to the correct value (sadly).
-        [Binding]
-        public int Index
+        public Attribute(CharacterSheetPanel panel, AttributeData data)
         {
-            get { return index; }
-            set
-            {
-                if (SetProperty(ref index, value, nameof(Index)))
-                {
-                    Data.Name = SkillOptions[index];
-                }
-            }
+            this.panel = panel;
+            this.Data = data;
         }
 
         [Binding]
         public void ShowOptions()
         {
-            DropdownWindow.ShowDropdown(Options, option =>
+            var actualOptions = Options.Where(option =>
             {
-                Data.Name = option;
-            });
+                return option == Data.Name || !panel.Skills.ToList().Exists(o => o.Data.Name == option);
+            })
+            .ToList();
+
+            DropdownWindow.ShowDropdown(actualOptions,
+                option => Data.Name = option,
+                actualOptions.IndexOf(Data.Name));
         }
 
         [Binding]
         public void IncrementValue()
         {
             Data.Value++;
-            unsavedChanges?.Invoke();
+            panel.MarkUnsavedChanges();
         }
 
         [Binding]
         public void DecrementValue()
         {
             Data.Value--;
-            unsavedChanges?.Invoke();
+            panel.MarkUnsavedChanges();
         }
 
         [Binding]
         public void IncrementBuff()
         {
             Data.Buff++;
-            unsavedChanges?.Invoke();
+            panel.MarkUnsavedChanges();
         }
 
         [Binding]
         public void DecrementBuff()
         {
             Data.Buff--;
-            unsavedChanges?.Invoke();
+            panel.MarkUnsavedChanges();
         }
 
         [Binding]
         public void Remove()
         {
-            removeMe?.Invoke();
-            unsavedChanges?.Invoke();
+            panel.Skills.Remove(this);
+            panel.MarkUnsavedChanges();
         }
     }
 
@@ -150,16 +145,13 @@ public class CharacterSheetPanel : Panel
         // If we haven't saved our character yet, create new data;
         foreach (var attr in savedAttrs)
         {
-            var newAttr = new Attribute { Data = attr };
-            newAttr.unsavedChanges += MarkUnsavedChanges;
+            var newAttr = new Attribute(this, attr);
             attributes.Add(newAttr);
         }
 
         foreach (var skill in savedSkills)
         {
-            var newSkill = new Attribute { Data = skill, Index = SkillOptions.FindIndex(option => option == skill.Name) };
-            newSkill.removeMe = () => RemoveSkill(newSkill);
-            newSkill.unsavedChanges += MarkUnsavedChanges;
+            var newSkill = new Attribute(this, skill);
             skills.Add(newSkill);
         }
     }
@@ -167,9 +159,7 @@ public class CharacterSheetPanel : Panel
     [Binding]
     public void AddSkill()
     {
-        var skill = new Attribute { Data = new AttributeData { Name = "...", Value = 0, Buff = 0 } };
-        skill.removeMe = () => RemoveSkill(skill);
-        skill.unsavedChanges += MarkUnsavedChanges;
+        var skill = new Attribute(this, new AttributeData { Name = "...", Value = 0, Buff = 0 });
         Skills.Add(skill);
         UnsavedChanges = true;
     }
@@ -190,13 +180,6 @@ public class CharacterSheetPanel : Panel
         originalCharacterRef.Name = Name;
         CharacterModel.Instance.Save();
         UnsavedChanges = false;
-    }
-
-    private void RemoveSkill(Attribute skill)
-    {
-        skill.unsavedChanges -= MarkUnsavedChanges;
-        Skills.Remove(skill);
-        MarkUnsavedChanges();
     }
 
     private void MarkUnsavedChanges()

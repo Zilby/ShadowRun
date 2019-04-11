@@ -9,7 +9,6 @@ public class CharacterModel
 
     public static Dictionary<string, string> SkillNamesToRelatedAttrs = new Dictionary<string, string>
     {
-        { "...", null },
         { "Unarmed Combat", "Agility" },
         { "Flight", "Agility" },
         { "Dodge", "Agility" },
