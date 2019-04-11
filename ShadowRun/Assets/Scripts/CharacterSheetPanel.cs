@@ -6,23 +6,13 @@ using UnityEngine.UI;
 using UnityWeld;
 using UnityWeld.Binding;
 
+
 [Binding]
 public class CharacterSheetPanel : Panel
 {
+    private Character originalCharacterRef;
 
-    public static List<Dropdown.OptionData> SkillOptions = CharacterModel.SkillNamesToRelatedAttrs.Keys
-        .Select(key => new Dropdown.OptionData(key))
-        .ToList();
-    // new List<Dropdown.OptionData>()
-    // {
-    //     new Dropdown.OptionData("..."),
-    //     new Dropdown.OptionData("Ranged W."),
-    //     new Dropdown.OptionData("Pistols"),
-    //     new Dropdown.OptionData("Shotguns"),
-    //     new Dropdown.OptionData("Rifles"),
-    //     new Dropdown.OptionData("SMGs"),
-    //     new Dropdown.OptionData("Dodge"),
-    // };
+    public static List<string> SkillOptions = CharacterModel.SkillNamesToRelatedAttrs.Keys.ToList();
 
     [Binding]
     public class Attribute : DataBindObject
@@ -31,7 +21,7 @@ public class CharacterSheetPanel : Panel
         public Action unsavedChanges;
 
         [Binding]
-        public List<Dropdown.OptionData> Options => CharacterSheetPanel.SkillOptions;
+        public List<string> Options => CharacterSheetPanel.SkillOptions;
 
         private AttributeData data;
         [Binding]
@@ -51,9 +41,18 @@ public class CharacterSheetPanel : Panel
             {
                 if (SetProperty(ref index, value, nameof(Index)))
                 {
-                    Data.Name = SkillOptions[index].text;
+                    Data.Name = SkillOptions[index];
                 }
             }
+        }
+
+        [Binding]
+        public void ShowOptions()
+        {
+            DropdownWindow.ShowDropdown(Options, option =>
+            {
+                Data.Name = option;
+            });
         }
 
         [Binding]
@@ -97,7 +96,13 @@ public class CharacterSheetPanel : Panel
     public string Name
     {
         get { return _name; }
-        private set { SetProperty(ref _name, value, nameof(Name)); }
+        private set
+        {
+            if (SetProperty(ref _name, value, nameof(Name)))
+            {
+                UnsavedChanges = true;
+            }
+        }
     }
 
     private bool unsavedChanges;
@@ -124,10 +129,21 @@ public class CharacterSheetPanel : Panel
         private set { SetProperty(ref skills, value, nameof(Skills)); }
     }
 
-    void OnEnable()
+    public override void Init(object args = null)
     {
-        var savedAttrs = CharacterModel.Instance.Characters.MyCharacter.Attributes;
-        var savedSkills = CharacterModel.Instance.Characters.MyCharacter.Skills;
+        var c = args as Character;
+        if (c == null)
+        {
+            originalCharacterRef = CharacterModel.Instance.Characters.MyCharacter;
+        }
+        else
+        {
+            originalCharacterRef = c;
+        }
+
+        Name = originalCharacterRef.Name;
+        var savedAttrs = originalCharacterRef.Attributes;
+        var savedSkills = originalCharacterRef.Skills;
         attributes.Clear();
         skills.Clear();
 
@@ -141,7 +157,7 @@ public class CharacterSheetPanel : Panel
 
         foreach (var skill in savedSkills)
         {
-            var newSkill = new Attribute { Data = skill, Index = SkillOptions.FindIndex(option => option.text == skill.Name) };
+            var newSkill = new Attribute { Data = skill, Index = SkillOptions.FindIndex(option => option == skill.Name) };
             newSkill.removeMe = () => RemoveSkill(newSkill);
             newSkill.unsavedChanges += MarkUnsavedChanges;
             skills.Add(newSkill);
@@ -161,17 +177,17 @@ public class CharacterSheetPanel : Panel
     [Binding]
     public void SaveChanges()
     {
-        var MyCharacter = CharacterModel.Instance.Characters.MyCharacter;
-        MyCharacter.Attributes.Clear();
+        originalCharacterRef.Attributes.Clear();
         foreach (var attr in attributes)
         {
-            MyCharacter.Attributes.Add(attr.Data);
+            originalCharacterRef.Attributes.Add(attr.Data);
         }
-        MyCharacter.Skills.Clear();
+        originalCharacterRef.Skills.Clear();
         foreach (var skill in skills)
         {
-            MyCharacter.Skills.Add(skill.Data);
+            originalCharacterRef.Skills.Add(skill.Data);
         }
+        originalCharacterRef.Name = Name;
         CharacterModel.Instance.Save();
         UnsavedChanges = false;
     }

@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityWeld;
 using UnityWeld.Binding;
+using OptionData = TMPro.TMP_Dropdown.OptionData;
 
 [Binding]
 public class TestMakerPanel : Panel
@@ -16,16 +17,16 @@ public class TestMakerPanel : Panel
         set { SetProperty(ref success, value, nameof(Success)); }
     }
 
-    private Dropdown.OptionData skill;
+    private string skill;
     [Binding]
-    public Dropdown.OptionData Skill
+    public string Skill
     {
         get { return skill; }
         set { SetProperty(ref skill, value, nameof(Skill)); }
     }
 
     [Binding]
-    public List<Dropdown.OptionData> SkillOptions { get { return CharacterSheetPanel.SkillOptions; } }
+    public List<string> SkillOptions { get { return CharacterSheetPanel.SkillOptions; } }
 
     private int threshold;
     [Binding]
@@ -48,24 +49,27 @@ public class TestMakerPanel : Panel
     }
 
     [Binding]
-    public void SetOption(int option)
+    public void SelectOption()
     {
-        Skill = SkillOptions[option];
-        Debug.Log($"option set to {option}");
+        DropdownWindow.ShowDropdown(SkillOptions, option =>
+        {
+            Skill = option;
+            Debug.Log($"option set to {option}");
+        });
     }
 
     [Binding]
     public void CreateTest()
     {
         FeedModel.Instance.AddMessage("GM",
-        $"Created new success test for {Skill.text}",
+        $"Created new success test for {Skill}",
         new TestData
         {
-            PlayerSkill = Skill.text,
+            PlayerSkill = Skill,
             SkillThreshold = Threshold
         },
         send: true);
-        Debug.Log($"New test for {Skill.text} at threshold {Threshold}");
+        Debug.Log($"New test for {Skill} at threshold {Threshold}");
         PanelStack.Instance.PopPanel();
         NotificationSystem.DisplayNotification("Test Created");
     }
