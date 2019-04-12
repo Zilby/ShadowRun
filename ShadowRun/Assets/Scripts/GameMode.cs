@@ -13,4 +13,12 @@ public class GameMode : DataBindMonobehaviour
         get { return isPlayer; }
         set { SetProperty(ref isPlayer, value, nameof(IsPlayer)); }
     }
+
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Application.Quit();
+        }
+    }
 }

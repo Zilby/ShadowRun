@@ -199,6 +199,18 @@ public class DiceRollPanel : Panel
         yield return WaitForResult(PlayerResult, TestData.SkillThreshold);
         Finished = true;
         Success = PlayerResult.Success;
+
+        var name = CharacterModel.Instance.Characters.MyCharacter.Name;
+        var message = Success ?
+            $"Succeeded roll for {TestData.PlayerSkill}." :
+            $"Failed roll for {TestData.PlayerSkill}.";
+
+        if (PlayerResult.Glitch)
+        {
+            message += "\nGlitch.";
+        }
+
+        FeedModel.Instance.AddMessage(name, message, send: true);
     }
 
     private IEnumerator WaitForResultOpposed()
@@ -217,6 +229,21 @@ public class DiceRollPanel : Panel
         OpponentResult.Success = !success;
         Success = PlayerResult.Success;
         Finished = true;
+        var name = CharacterModel.Instance.Characters.MyCharacter.Name;
+        var message = Success ?
+            $"Succeeded against {OpponentName}." :
+            $"Failed against {OpponentName}.";
+
+        if (PlayerResult.Glitch)
+        {
+            message += "\nPlayer glitch.";
+        }
+        if (OpponentResult.Glitch)
+        {
+            message += "\nEnemy glitch.";
+        }
+
+        FeedModel.Instance.AddMessage(name, message, send: true);
     }
 
     [Binding]

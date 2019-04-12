@@ -86,7 +86,9 @@ public class FeedModel : DataBindObject, IDisposable
 
     public void CreateChannel(string name, Action<OpenChannel, Exception> onChannelCreated)
     {
-        OpenChannel.CreateChannel(name, null, name.GetHashCode().ToString(), (channel, e) =>
+        var code = Math.Abs(name.GetHashCode()).ToString().Substring(0, 6);
+
+        OpenChannel.CreateChannel(name, null, code.ToString(), (channel, e) =>
         {
             if (e != null)
             {
