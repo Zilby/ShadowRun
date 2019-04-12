@@ -6,6 +6,8 @@ using UnityWeld.Binding;
 [Binding]
 public class LoginPanel : Panel
 {
+    [SerializeField]
+    GameMode mode;
 
     private string roomName;
     [Binding]
@@ -36,6 +38,7 @@ public class LoginPanel : Panel
                     return;
                 }
                 RoomCode = channel.Data;
+                mode.IsPlayer = false;
             });
         });
     }

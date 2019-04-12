@@ -11,6 +11,14 @@ public class FeedPanel : Panel
     [SerializeField]
     LayoutGroup scrollview;
 
+    private string roomCode;
+    [Binding]
+    public string RoomCode
+    {
+        get { return roomCode; }
+        set { SetProperty(ref roomCode, value, nameof(RoomCode)); }
+    }
+
     private ObservableList<FeedMessageView> messages;
     [Binding]
     public ObservableList<FeedMessageView> Messages
@@ -21,6 +29,7 @@ public class FeedPanel : Panel
 
     private void Start()
     {
+        RoomCode = FeedModel.Instance.RoomCode;
         Messages = FeedModel.Instance.Messages;
         Messages.CollectionChanged += OnCollectionChanged;
     }
