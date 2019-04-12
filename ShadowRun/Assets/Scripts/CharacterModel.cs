@@ -171,7 +171,7 @@ public class Character
     }
 
     [SerializeField]
-    private List<AttributeData> attributes;
+    private List<AttributeData> attributes = new List<AttributeData>();
     public List<AttributeData> Attributes
     {
         get { return attributes; }
@@ -179,7 +179,7 @@ public class Character
     }
 
     [SerializeField]
-    private List<AttributeData> skills;
+    private List<AttributeData> skills = new List<AttributeData>();
     public List<AttributeData> Skills
     {
         get { return skills; }

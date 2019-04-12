@@ -37,6 +37,12 @@ public class FeedPanel : Panel
     }
 
     [Binding]
+    public void GoToNPCPanel()
+    {
+        PanelStack.Instance.PushPanel<NPCPanel>();
+    }
+
+    [Binding]
     public void GoToTestMaker()
     {
         PanelStack.Instance.PushPanel<TestMakerPanel>();

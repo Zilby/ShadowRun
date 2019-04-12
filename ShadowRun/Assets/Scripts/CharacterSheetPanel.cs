@@ -178,6 +178,13 @@ public class CharacterSheetPanel : Panel
             originalCharacterRef.Skills.Add(skill.Data);
         }
         originalCharacterRef.Name = Name;
+
+        if (CharacterModel.Instance.Characters.MyCharacter != originalCharacterRef &&
+            !CharacterModel.Instance.Characters.NPCs.Contains(originalCharacterRef))
+        {
+            CharacterModel.Instance.Characters.NPCs.Add(originalCharacterRef);
+        }
+
         CharacterModel.Instance.Save();
         UnsavedChanges = false;
     }
