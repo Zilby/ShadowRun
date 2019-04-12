@@ -1291,7 +1291,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb040b803ad26404caec9f699b95f06a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  viewAdapterTypeName: ObjectNullAdapter
+  viewAdapterTypeName: 
   viewAdapterOptions: {fileID: 0}
   viewModelPropertyName: TestMakerPanel.HasOpponent
   viewPropertyName: UnityEngine.UI.Button.interactable
@@ -4526,7 +4526,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4640338666851619962}
   - component: {fileID: 3904066179610643579}
-  - component: {fileID: 7991099365924893205}
   m_Layer: 5
   m_Name: OpposedTest
   m_TagString: Untagged
@@ -4583,17 +4582,3 @@ MonoBehaviour:
   m_ChildForceExpandHeight: 0
   m_ChildControlWidth: 1
   m_ChildControlHeight: 0
---- !u!114 &7991099365924893205
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8853712305867630879}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ffa7e2075ad7c9b40a47b30b477658ec, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  viewModelPropertyName: 
-  viewModelTypeName: 

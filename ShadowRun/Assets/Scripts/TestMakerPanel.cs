@@ -170,9 +170,9 @@ public class TestMakerPanel : Panel
             {
                 PlayerSkill = Skill,
                 OpponentSkill = OpponentSkill,
-                OpponentName = Opponent.Name,
-                OpponentSkillValue = Opponent.Skills.Find(s => s.Name == OpponentSkill).Value,
-                OpponentPairedAttributeValue = Opponent.Attributes.Find(a => a.Name == CharacterModel.SkillNamesToRelatedAttrs[OpponentSkill]).Value,
+                OpponentName = Opponent?.Name,
+                OpponentSkillValue = Opponent?.Skills.Find(s => s.Name == OpponentSkill).Value ?? 0,
+                OpponentPairedAttributeValue = Opponent?.Attributes.Find(a => a.Name == CharacterModel.SkillNamesToRelatedAttrs[OpponentSkill]).Value ?? 0,
                 SkillThreshold = Threshold
             },
             send: true);

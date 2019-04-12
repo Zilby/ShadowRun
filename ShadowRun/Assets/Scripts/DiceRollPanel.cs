@@ -101,6 +101,14 @@ public class DiceRollPanel : Panel
         set { SetProperty(ref finished, value, nameof(Finished)); }
     }
 
+    private bool success;
+    [Binding]
+    public bool Success
+    {
+        get { return success; }
+        set { SetProperty(ref success, value, nameof(Success)); }
+    }
+
     private TestData testData;
     [Binding]
     public TestData TestData
@@ -131,18 +139,15 @@ public class DiceRollPanel : Panel
 
         IsSuccessTest = string.IsNullOrEmpty(TestData.OpponentSkill);
 
+        Rolled = false;
+        Finished = false;
+        Success = false;
         PlayerResult = new DiceResult();
         OpponentResult = new DiceResult();
     }
 
     void OnDisable()
     {
-        // Rolled = false;
-        // Finished = false;
-        // FivesAndSixes = 0;
-        // Ones = 0;
-        // Glitch = false;
-        // CritGlitch = false;
         diceRoller.ResetRoller();
     }
 
@@ -171,7 +176,7 @@ public class DiceRollPanel : Panel
         }
     }
 
-    private IEnumerator WaitForResult(DiceResult results, int threshold, bool lastRoll)
+    private IEnumerator WaitForResult(DiceResult results, int threshold)
     {
         diceRoller.RollDice();
         yield return new WaitUntil(() =>
@@ -191,21 +196,26 @@ public class DiceRollPanel : Panel
     private IEnumerator WaitForResultSuccess()
     {
         diceRoller.SetUpDice(CalculateMyDice(TestData));
-        yield return WaitForResult(PlayerResult, TestData.SkillThreshold, false);
+        yield return WaitForResult(PlayerResult, TestData.SkillThreshold);
         Finished = true;
-
-
+        Success = PlayerResult.Success;
     }
 
     private IEnumerator WaitForResultOpposed()
     {
         diceRoller.SetUpDice(CalculateMyDice(TestData));
-        yield return WaitForResult(PlayerResult, 0, false);
+        yield return WaitForResult(PlayerResult, 0);
         yield return betweenRollsCurtain.FadeIn();
+        diceRoller.ResetRoller();
         diceRoller.SetUpDice(TestData.OpponentSkillValue + TestData.OpponentPairedAttributeValue);
         yield return betweenRollsCurtain.FadeOut();
         RollDice();
-        yield return WaitForResult(OpponentResult, PlayerResult.FivesAndSixes, false);
+        yield return WaitForResult(OpponentResult, PlayerResult.FivesAndSixes);
+
+        var success = PlayerResult.FivesAndSixes > OpponentResult.FivesAndSixes;
+        PlayerResult.Success = success;
+        OpponentResult.Success = !success;
+        Success = PlayerResult.Success;
         Finished = true;
     }
 
