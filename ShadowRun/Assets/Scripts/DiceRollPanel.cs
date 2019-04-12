@@ -139,6 +139,8 @@ public class DiceRollPanel : Panel
 
         IsSuccessTest = string.IsNullOrEmpty(TestData.OpponentSkill);
 
+        OpponentName = TestData.OpponentName;
+
         Rolled = false;
         Finished = false;
         Success = false;

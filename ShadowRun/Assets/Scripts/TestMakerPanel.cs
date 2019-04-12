@@ -161,7 +161,7 @@ public class TestMakerPanel : Panel
     {
         var message = Success ?
             $"Created new success test for {Skill}" :
-            $"Created new oppoesed test for {Skill} against {Opponent.Name}'s {OpponentSkill}";
+            $"Created new oppoesed test for {Skill} against {Opponent?.Name}'s {OpponentSkill}";
 
         FeedModel.Instance.AddMessage(
             "GM",

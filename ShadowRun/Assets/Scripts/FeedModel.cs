@@ -94,10 +94,6 @@ public class FeedModel : DataBindObject, IDisposable
             {
                 Debug.LogError(e);
             }
-            else
-            {
-                RoomCode = channel.Data;
-            }
             onChannelCreated?.Invoke(channel, e);
         });
     }
@@ -119,6 +115,7 @@ public class FeedModel : DataBindObject, IDisposable
                     Debug.LogError(e2);
                 }
                 this.channel = channel;
+                RoomCode = channel.Data;
                 onChannelEntered?.Invoke(channel, e2);
             });
         });
