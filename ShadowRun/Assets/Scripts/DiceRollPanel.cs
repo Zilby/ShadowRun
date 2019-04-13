@@ -136,6 +136,22 @@ public class DiceRollPanel : Panel
         }
     }
 
+    private bool simpleMode;
+    [Binding]
+    public bool SimpleMode
+    {
+        get { return simpleMode; }
+        set { SetProperty(ref simpleMode, value, nameof(SimpleMode)); }
+    }
+
+    private int numDice;
+    [Binding]
+    public int NumDice
+    {
+        get { return numDice; }
+        set { SetProperty(ref numDice, value, nameof(NumDice)); }
+    }
+
     [SerializeField]
     private DiceRoller diceRoller;
 
@@ -147,6 +163,13 @@ public class DiceRollPanel : Panel
             return;
         }
 
+        if (args == null)
+        {
+            SimpleMode = true;
+            NumDice = 1;
+            return;
+        }
+        SimpleMode = false;
         TestData = args as TestData;
 
         if (TestData == null)
@@ -197,7 +220,7 @@ public class DiceRollPanel : Panel
         }
     }
 
-    private IEnumerator WaitForResult(DiceResult results, int threshold)
+    private IEnumerator WaitForResult(DiceResult results, int threshold, bool finish = false)
     {
         diceRoller.RollDice();
         yield return new WaitUntil(() =>
@@ -212,6 +235,10 @@ public class DiceRollPanel : Panel
         results.Success = results.FivesAndSixes >= threshold;
         results.Glitch = results.Ones > numRolled / 2;
         results.CritGlitch = results.Glitch && !results.Success;
+        if (finish)
+        {
+            Finished = true;
+        }
     }
 
     private IEnumerator WaitForResultSuccess()
@@ -274,12 +301,25 @@ public class DiceRollPanel : Panel
         FeedModel.Instance.AddMessage(name, message, send: true);
     }
 
+    private IEnumerator WaitForResultSimple(int numDice)
+    {
+        diceRoller.ResetRoller();
+        diceRoller.SetUpDice(numDice);
+        yield return WaitForResult(new DiceResult(), 0);
+        Rolled = false;
+    }
+
     [Binding]
     public void RollDice()
     {
         if (!Rolled)
         {
             Rolled = true;
+            if (SimpleMode)
+            {
+                StartCoroutine(WaitForResultSimple(NumDice));
+                return;
+            }
             if (IsSuccessTest)
             {
                 StartCoroutine(WaitForResultSuccess());
@@ -288,6 +328,21 @@ public class DiceRollPanel : Panel
             {
                 StartCoroutine(WaitForResultOpposed());
             }
+        }
+    }
+
+    [Binding]
+    public void IncrementNumDice()
+    {
+        NumDice++;
+    }
+
+    [Binding]
+    public void DecrementNumDice()
+    {
+        if (NumDice > 1)
+        {
+            NumDice--;
         }
     }
 

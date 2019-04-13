@@ -57,6 +57,12 @@ public class FeedPanel : Panel
         PanelStack.Instance.PushPanel<TestMakerPanel>();
     }
 
+    [Binding]
+    public void GoToDiceRoller()
+    {
+        PanelStack.Instance.PushPanel<DiceRollPanel>();
+    }
+
     private void OnEnable()
     {
         StartCoroutine(WaitThenFixCanvas());
