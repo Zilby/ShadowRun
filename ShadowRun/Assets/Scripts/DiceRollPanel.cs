@@ -157,6 +157,11 @@ public class DiceRollPanel : Panel
 
     public override void Init(object args = null)
     {
+        Rolled = false;
+        Finished = false;
+        Success = false;
+        PlayerResult = new DiceResult();
+        OpponentResult = new DiceResult();
         if (diceRoller == null)
         {
             Debug.LogError("Dice roller cannot be null");
@@ -183,11 +188,7 @@ public class DiceRollPanel : Panel
 
         OpponentName = TestData.OpponentName;
 
-        Rolled = false;
-        Finished = false;
-        Success = false;
-        PlayerResult = new DiceResult();
-        OpponentResult = new DiceResult();
+
     }
 
     void OnDisable()
