@@ -163,6 +163,32 @@ public class TestMakerPanel : Panel
             $"Created new success test for {Skill}" :
             $"Created new oppoesed test for {Skill} against {Opponent?.Name}'s {OpponentSkill}";
 
+        var opponentSkillValue = 0;
+        var opponentPairedAttributeValue = 0;
+
+        if (OpponentSkill == "Dodge")
+        {
+            foreach (var a in Opponent.Attributes)
+            {
+                if (a.Name == "Reaction" || a.Name == "Intuition")
+                {
+                    opponentSkillValue += a.Value;
+                }
+            }
+            opponentPairedAttributeValue = 0;
+        }
+        else
+        {
+            opponentSkillValue = Opponent?.Skills.Find(s => s.Name == OpponentSkill)?.Value ?? 0;
+            opponentPairedAttributeValue = Opponent?.Attributes.Find(a => a.Name == CharacterModel.SkillNamesToRelatedAttrs[OpponentSkill])?.Value ?? 0;
+        }
+
+        var opponentTotalDamage = 0;
+        if (Opponent != null)
+        {
+            opponentTotalDamage = Opponent.Damage + Opponent.Stun;
+        }
+
         FeedModel.Instance.AddMessage(
             "GM",
             message,
@@ -171,8 +197,9 @@ public class TestMakerPanel : Panel
                 PlayerSkill = Skill,
                 OpponentSkill = OpponentSkill,
                 OpponentName = Opponent?.Name,
-                OpponentSkillValue = Opponent?.Skills.Find(s => s.Name == OpponentSkill).Value ?? 0,
-                OpponentPairedAttributeValue = Opponent?.Attributes.Find(a => a.Name == CharacterModel.SkillNamesToRelatedAttrs[OpponentSkill]).Value ?? 0,
+                OpponentSkillValue = opponentSkillValue,
+                OpponentTotalDamage = opponentTotalDamage,
+                OpponentPairedAttributeValue = opponentPairedAttributeValue,
                 SkillThreshold = Threshold
             },
             send: true);

@@ -12,7 +12,9 @@ public class CharacterSheetPanel : Panel
 {
     private Character originalCharacterRef;
 
-    public static List<string> SkillOptions = CharacterModel.SkillNamesToRelatedAttrs.Keys.ToList();
+    public static List<string> SkillOptions = CharacterModel.SkillNamesToRelatedAttrs.Keys
+        .Where(k => k != "Dodge")
+        .ToList();
 
     [Binding]
     public class Attribute : DataBindObject
@@ -100,6 +102,22 @@ public class CharacterSheetPanel : Panel
         }
     }
 
+    private int damage;
+    [Binding]
+    public int Damage
+    {
+        get { return damage; }
+        set { SetProperty(ref damage, value, nameof(Damage)); }
+    }
+
+    private int stun;
+    [Binding]
+    public int Stun
+    {
+        get { return stun; }
+        set { SetProperty(ref stun, value, nameof(Stun)); }
+    }
+
     private bool unsavedChanges;
     [Binding]
     public bool UnsavedChanges
@@ -157,6 +175,34 @@ public class CharacterSheetPanel : Panel
     }
 
     [Binding]
+    public void IncrementDamage()
+    {
+        Damage++;
+        MarkUnsavedChanges();
+    }
+
+    [Binding]
+    public void DecrementDamage()
+    {
+        if (Damage > 0) { Damage--; }
+        MarkUnsavedChanges();
+    }
+
+    [Binding]
+    public void IncrementStun()
+    {
+        Stun++;
+        MarkUnsavedChanges();
+    }
+
+    [Binding]
+    public void DecrementStun()
+    {
+        if (stun > 0) { Stun--; }
+        MarkUnsavedChanges();
+    }
+
+    [Binding]
     public void AddSkill()
     {
         var skill = new Attribute(this, new AttributeData { Name = "...", Value = 0, Buff = 0 });
@@ -167,6 +213,8 @@ public class CharacterSheetPanel : Panel
     [Binding]
     public void SaveChanges()
     {
+        originalCharacterRef.Damage = Damage;
+        originalCharacterRef.Stun = Stun;
         originalCharacterRef.Attributes.Clear();
         foreach (var attr in attributes)
         {

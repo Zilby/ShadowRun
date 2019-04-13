@@ -11,7 +11,6 @@ public class CharacterModel
     {
         { "Unarmed Combat", "Agility" },
         { "Flight", "Agility" },
-        { "Dodge", "Agility" },
         { "Longarms", "Agility" },
         { "Palming", "Agility" },
         { "Gunnery", "Agility" },
@@ -75,7 +74,8 @@ public class CharacterModel
         { "Disenchanting", "Magic" },
         { "Ritual Spellcasting", "Magic" },
         { "Artificing", "Magic" },
-        { "Counterspelling", "Magic" }
+        { "Counterspelling", "Magic" },
+        { "Dodge", null }
     };
 
     private static CharacterModel instance;
@@ -168,6 +168,22 @@ public class Character
     {
         get { return name; }
         set { name = value; }
+    }
+
+    [SerializeField]
+    private int health;
+    public int Damage
+    {
+        get { return health; }
+        set { health = value; }
+    }
+
+    [SerializeField]
+    private int stun;
+    public int Stun
+    {
+        get { return stun; }
+        set { stun = value; }
     }
 
     [SerializeField]

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityWeld.Binding;
@@ -85,6 +86,10 @@ public class DiceRollPanel : Panel
         set { SetProperty(ref isSuccessTest, value, nameof(IsSuccessTest)); }
     }
 
+    private int numPlayerDice;
+    [Binding]
+    public int NumPlayerDice => CalculateMyDice(TestData);
+
     private bool rolled;
     [Binding]
     public bool Rolled
@@ -109,12 +114,26 @@ public class DiceRollPanel : Panel
         set { SetProperty(ref success, value, nameof(Success)); }
     }
 
+    private bool draw;
+    [Binding]
+    public bool Draw
+    {
+        get { return draw; }
+        set { SetProperty(ref draw, value, nameof(Draw)); }
+    }
+
     private TestData testData;
     [Binding]
     public TestData TestData
     {
         get { return testData; }
-        set { SetProperty(ref testData, value, nameof(TestData)); }
+        set
+        {
+            if (SetProperty(ref testData, value, nameof(TestData)))
+            {
+                OnPropertyChanged(nameof(NumPlayerDice));
+            }
+        }
     }
 
     [SerializeField]
@@ -221,7 +240,10 @@ public class DiceRollPanel : Panel
         yield return WaitForResult(PlayerResult, 0);
         yield return betweenRollsCurtain.FadeIn();
         diceRoller.ResetRoller();
-        diceRoller.SetUpDice(TestData.OpponentSkillValue + TestData.OpponentPairedAttributeValue);
+
+        var numDice = Math.Max(0, (TestData.OpponentSkillValue + TestData.OpponentPairedAttributeValue) - (TestData.OpponentTotalDamage / 3));
+
+        diceRoller.SetUpDice(numDice);
         yield return betweenRollsCurtain.FadeOut();
         RollDice();
         yield return WaitForResult(OpponentResult, PlayerResult.FivesAndSixes);
@@ -230,11 +252,15 @@ public class DiceRollPanel : Panel
         PlayerResult.Success = success;
         OpponentResult.Success = !success;
         Success = PlayerResult.Success;
+
+        Draw = PlayerResult.FivesAndSixes == OpponentResult.FivesAndSixes;
+
         Finished = true;
         var name = CharacterModel.Instance.Characters.MyCharacter.Name;
-        var message = Success ?
-            $"Succeeded against {OpponentName}." :
-            $"Failed against {OpponentName}.";
+        var message = Draw ? $"Draw against {OpponentName}." :
+                Success ?
+                    $"Succeeded against {OpponentName}." :
+                    $"Failed against {OpponentName}.";
 
         if (PlayerResult.Glitch)
         {
@@ -267,9 +293,26 @@ public class DiceRollPanel : Panel
 
     private int CalculateMyDice(TestData data)
     {
+        if (TestData == null)
+        {
+            return 0;
+        }
+        var myCharacter = CharacterModel.Instance.Characters.MyCharacter;
         var skill = data.PlayerSkill;
-        int numDice = 0;
-        foreach (AttributeData s in CharacterModel.Instance.Characters.MyCharacter.Skills)
+        var numDice = 0;
+        if (data.PlayerSkill == "Dodge")
+        {
+            foreach (var a in myCharacter.Attributes)
+            {
+                if (a.Name == "Reaction" || a.Name == "Intuition")
+                {
+                    numDice += a.Value;
+                }
+            }
+            return numDice;
+        }
+
+        foreach (var s in myCharacter.Skills)
         {
             print(s.Name + ": " + s.Value);
             if (s.Name.Equals(skill))
@@ -278,7 +321,7 @@ public class DiceRollPanel : Panel
                 break;
             }
         }
-        foreach (AttributeData s in CharacterModel.Instance.Characters.MyCharacter.Attributes)
+        foreach (var s in myCharacter.Attributes)
         {
             print(s.Name + ": " + s.Value);
             if (s.Name.Equals(CharacterModel.SkillNamesToRelatedAttrs[skill]))
@@ -287,6 +330,9 @@ public class DiceRollPanel : Panel
                 break;
             }
         }
+
+        numDice = Math.Max(0, numDice - ((myCharacter.Stun + myCharacter.Damage) / 3));
+
         return numDice;
     }
 }
