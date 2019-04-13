@@ -172,6 +172,9 @@ public class CharacterSheetPanel : Panel
             var newSkill = new Attribute(this, skill);
             skills.Add(newSkill);
         }
+
+        Stun = originalCharacterRef.Stun;
+        Damage = originalCharacterRef.Damage;
     }
 
     [Binding]

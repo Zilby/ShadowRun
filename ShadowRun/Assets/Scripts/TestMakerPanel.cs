@@ -88,8 +88,9 @@ public class TestMakerPanel : Panel
         }
     }
 
+    private List<string> skillOptions = CharacterModel.SkillNamesToRelatedAttrs.Keys.ToList();
     [Binding]
-    public List<string> SkillOptions { get { return CharacterSheetPanel.SkillOptions; } }
+    public List<string> SkillOptions => skillOptions;
 
     private int threshold;
     [Binding]
